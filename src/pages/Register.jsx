@@ -4,6 +4,7 @@ import register from '../assets/Register.png';
 
 const Register = () => {
   const [form, setForm] = useState({
+    name: '',
     email: '',
     password: '',
     confirmPassword: ''
@@ -25,14 +26,23 @@ const Register = () => {
       const response = await fetch('http://localhost:5174/users', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: form.email, password: form.password })
+        body: JSON.stringify({
+          name: form.name,
+          email: form.email,
+          password: form.password
+        })
       });
 
       const result = await response.text();
 
       if (response.ok) {
         alert('Registered successfully: ' + result);
-        setForm({ email: '', password: '', confirmPassword: '' });
+        setForm({
+          name: '',
+          email: '',
+          password: '',
+          confirmPassword: ''
+        });
       } else {
         alert('Registration failed: ' + result);
       }
@@ -62,6 +72,18 @@ const Register = () => {
           <div className="flex h-[80%] w-[60%] ml-[25%] bg-white/5 rounded-lg border border-white/20 backdrop-blur-sm mr-[25%]">
             <div className="h-[100%] w-[61%] rounded p-8">
               <form className="space-y-6" onSubmit={handleSubmit}>
+                <div>
+                  <input 
+                    type="text" 
+                    name="name"
+                    value={form.name}
+                    onChange={handleChange}
+                    placeholder="Username" 
+                    className="w-full px-4 py-3 bg-white/5 border border-white/20 rounded-lg text-white placeholder-white/50 focus:outline-none focus:ring-1 focus:ring-white"
+                    required
+                  />
+                </div>
+
                 <div>
                   <input 
                     type="email" 

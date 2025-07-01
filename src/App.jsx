@@ -12,6 +12,7 @@ import Rules from './pages/Rules'
 import Faults from './pages/Faults'
 import Tournament from "./pages/Tournament";
 import Rackets from './pages/Rackets'
+import Training from './pages/Training'
 import Shots from './pages/Shots'
 import Location from './pages/CourtLocation'
 import Cuddalore from './pages/Cuddalore'
@@ -45,6 +46,7 @@ function App() {
       <Route path="/madurai" element={<Madurai/>}/>
       <Route path="/thanjavur" element={<Thanjavur/>}/>
       <Route path="/salem" element={<Salem/>}/>
+      <Route path="/training" element={<Training/>}/>
       <Route path="/tiruchirapalli" element={<Trichy/>}/>
       <Route path="/chengalpattu" element={<Chengalpattu/>}/>
     </Routes>
