@@ -10,27 +10,32 @@ const courts = [
     name: 'Dc Sports Academy',
     location: 'Santhoshpuram, Chennai-600073',
     number: '+91 79426 96429',
-    image: DC
+    image: DC,
+    mapLink: 'https://maps.app.goo.gl/SM4k6hdz7y8u5Gco9'
   },
   {
     name: 'Vijay Sports Academy',
     location: 'Santhoshpuram, Chennai-600073',
     number: '+91 72999 86350',
-    image: Vijay
+    image: Vijay,
+    mapLink: 'https://maps.app.goo.gl/V3yfL5qqe2eYN6XFA'
   },
   {
     name: 'Jo & Jerry',
     location: 'Vengavasal, Chennai, Tamil Nadu 600126',
     number: '+91 98401 08637',
-    image: JoJerry
+    image: JoJerry,
+    mapLink: 'https://maps.app.goo.gl/2ihXQQnYVAActfXk7'
   },
   {
     name: 'RP22 Badminton Academy',
     location: 'Akshayam Roheline, Gandhi Nagar Road, Noothencheri, Vengavasal',
     number: '+91 81222 09225',
-    image: RP22
+    image: RP22,
+    mapLink: 'https://maps.app.goo.gl/BJk1Mrxr6539dGvL7'
   }
 ];
+
 
 const Chengalpattu = () => {
   return (
@@ -60,7 +65,19 @@ const Chengalpattu = () => {
               <div className="text-left p-5 text-gray-800">
                 <h2 className="text-xl font-bold">{court.name}</h2>
                 <h6 className="mt-1 text-sm">📍 {court.location}</h6>
-                <p className="mt-1 text-sm">📞 {court.number}</p>
+                <p className="mt-1 text-sm">
+  📞 {court.number} <br />
+ <a
+  href={court.mapLink}
+  target="_blank"
+  rel="noopener noreferrer"
+  className="inline-flex items-center gap-2 mt-2 text-sm bg-cyan-600 text-white px-3 py-1.5 rounded-full hover:bg-cyan-700 transition duration-200 shadow"
+>
+  📍 View on Map
+</a>
+</p>
+
+
               </div>
             </div>
           ))}

@@ -10,25 +10,29 @@ const courts = [
     name: 'Arul Badminton Club',
     location: 'Annamalai Nagar, Chidambaram',
     number: '+91 98765 43210',
-    image: ABC
+    image: ABC,
+    mapLink: 'https://maps.app.goo.gl/3h7sSP2XhyhrQe5m6'
   },
   {
     name: 'Kavikanna Badminton Club',
     location: 'B.Mutlur, Bhuvanagiri',
     number: '+91 79471 17951',
-    image: KBC
+    image: KBC,
+    mapLink: 'https://maps.app.goo.gl/qTVscwN2xncjhLLD6'
   },
   {
     name: 'Kathiravan Badminton Club',
     location: 'Vandigate, Chidambaram',
     number: '+91 91234 56789',
-    image: KaBC
+    image: KaBC,
+    mapLink: 'https://maps.app.goo.gl/ViQe7feX94FRA5fE7'
   },
   {
     name: 'Elite Badminton Club',
     location: 'NLC Officers Nagar, Vadalur',
     number: '+91 99408 63145',
-    image: EBC
+    image: EBC,
+    mapLink: 'https://maps.app.goo.gl/QoY5JKFoZS8n63py5'
   }
 ];
 
@@ -60,7 +64,17 @@ const Cuddalore = () => {
               <div className="text-left p-5 text-gray-800">
                 <h2 className="text-xl font-bold">{court.name}</h2>
                 <h6 className="mt-1 text-sm">📍 {court.location}</h6>
-                <p className="mt-1 text-sm">📞 {court.number}</p>
+                <p className="mt-1 text-sm">
+  📞 {court.number} <br />
+ <a
+  href={court.mapLink}
+  target="_blank"
+  rel="noopener noreferrer"
+  className="inline-flex items-center gap-2 mt-2 text-sm bg-cyan-600 text-white px-3 py-1.5 rounded-full hover:bg-cyan-700 transition duration-200 shadow"
+>
+  📍 View on Map
+</a>
+</p>
               </div>
             </div>
           ))}

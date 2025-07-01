@@ -9,6 +9,9 @@ import Dashboard from './pages/Dashboard'
 import History from './pages/History'
 import Score from './pages/Scorecard'
 import Rules from './pages/Rules'
+import Faults from './pages/Faults'
+import Tournament from "./pages/Tournament";
+import Rackets from './pages/Rackets'
 import Shots from './pages/Shots'
 import Location from './pages/CourtLocation'
 import Cuddalore from './pages/Cuddalore'
@@ -33,7 +36,10 @@ function App() {
       <Route path="/history" element={<History/>}/>
       <Route path="/score" element={<Score/>}/>
       <Route path="/rules" element={<Rules/>}/>
+      <Route path="/racket" element={<Rackets/>}/>
       <Route path="/shots" element={<Shots/>}/>
+      <Route path="/tournament" element={<Tournament/>}/>
+      <Route path="/faults" element={<Faults/>}/>
       <Route path="/location" element={<Location/>}/>
       <Route path="/cuddalore" element={<Cuddalore/>}/>
       <Route path="/madurai" element={<Madurai/>}/>

@@ -10,25 +10,29 @@ const salemCourts = [
     name: "Pullela Gopichand Badminton Academy",
     number: "98428 33885",
     location: "KPN petrol bank, Salem",
-    image: Gopichand
+    image: Gopichand,
+    mapLink:"https://maps.app.goo.gl/tD1K5xx92yMk1KsU9"
   },
   {
     name: "Kumar Badminton Academy Salem",
     number: "97919 08606",
     location: "Kannankurichi, Salem",
-    image: Kumar
+    image: Kumar,
+    mapLink:"https://maps.app.goo.gl/grpygsP2BhVDGrGL7"
   },
   {
     name: "Rajavel Badminton Acadamy",
     number: "94437 00010",
     location: "Sankar Nagar, Salem",
-    image: Rajavel
+    image: Rajavel,
+    mapLink:"https://maps.app.goo.gl/Pcenn3hWVBsycQcv8"
   },
   {
     name: "Tuvin Badminton Academy",
     number: "99941 16323",
     location: "Indian oil petrol bunk, Salem",
-    image: Tuvin
+    image: Tuvin,
+    mapLink:"https://maps.app.goo.gl/g9RzJPr1LZ8RwQV39"
   }
 ];
 
@@ -60,7 +64,17 @@ const Salem = () => {
               <div className="text-left p-5 text-gray-800">
                 <h2 className="text-xl font-bold">{court.name}</h2>
                 <h6 className="mt-1 text-sm">📍 {court.location}</h6>
-                <p className="mt-1 text-sm">📞 {court.number}</p>
+                <p className="mt-1 text-sm">
+  📞 {court.number} <br />
+ <a
+  href={court.mapLink}
+  target="_blank"
+  rel="noopener noreferrer"
+  className="inline-flex items-center gap-2 mt-2 text-sm bg-cyan-600 text-white px-3 py-1.5 rounded-full hover:bg-cyan-700 transition duration-200 shadow"
+>
+  📍 View on Map
+</a>
+</p>
               </div>
             </div>
           ))}

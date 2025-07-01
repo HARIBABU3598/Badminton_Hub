@@ -10,25 +10,29 @@ const maduraiCourts = [
     name: "Shuttlebeez Badminton Academy",
     number: "87782 19973",
     location: "Utchaparamedu, Madurai",
-    image: ShuttleBeez
+    image: ShuttleBeez,
+    mapLink:"https://maps.app.goo.gl/dwdKJYeeytYe6o8Z6"
   },
   {
     name: "Sai Academy of Badminton",
     number: "99943 57070",
     location: "Narimedu, Madurai",
-    image: SaiAcademy
+    image: SaiAcademy,
+    mapLink:"https://maps.app.goo.gl/GdXoCsh9GR5xL7mq8"
   },
   {
     name: "Somu Badminton Academy",
     number: "096269 62733",
     location: "Gomathipuram, Madurai",
-    image: SomuAcademy
+    image: SomuAcademy,
+    mapLink:"https://maps.app.goo.gl/LBCMwJhK4yRcivQT9"
   },
   {
     name: "Smash It Badminton Academy",
     number: "93423 98226",
     location: "Namachivaya Nagar, Madurai",
-    image: SmashIt
+    image: SmashIt,
+    mapLink:"https://maps.app.goo.gl/jNQhrXxSVYcuAHY57"
   }
 ];
 
@@ -60,7 +64,17 @@ const Madurai = () => {
               <div className="text-left p-5 text-gray-800">
                 <h2 className="text-xl font-bold">{court.name}</h2>
                 <h6 className="mt-1 text-sm">📍 {court.location}</h6>
-                <p className="mt-1 text-sm">📞 {court.number}</p>
+                <p className="mt-1 text-sm">
+  📞 {court.number} <br />
+ <a
+  href={court.mapLink}
+  target="_blank"
+  rel="noopener noreferrer"
+  className="inline-flex items-center gap-2 mt-2 text-sm bg-cyan-600 text-white px-3 py-1.5 rounded-full hover:bg-cyan-700 transition duration-200 shadow"
+>
+  📍 View on Map
+</a>
+</p>
               </div>
             </div>
           ))}

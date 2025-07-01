@@ -19,10 +19,10 @@ const sections = [
   { title: 'Faults', icon: Faults, path: '/faults' },
   { title: 'Shots', icon: Shots, path: '/shots' },
   { title: 'Match Scorecard', icon: Score, path: '/score' },
+  { title: 'Tournament', icon: Shop, path: '/tournament' },
   { title: 'Training and Workouts', icon: Training, path: '/training' },
   { title: 'Courts Location', icon: Login, path: '/location' },
-  { title: 'Nearby Sport Shops', icon: Shop, path: '/shop' },
-  { title: 'Materials', icon: Equip, path: '/materials' },
+  { title: 'Rackets', icon: Equip, path: '/racket' },
 ];
 
 

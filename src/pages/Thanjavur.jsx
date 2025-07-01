@@ -11,28 +11,28 @@ const thanjavurCourts = [
     number: "95979 99979",
     location: "Evergreen Nagar, Thanjavur",
     image: Dhrona,
-    mapLink: "https://g.co/kgs/px2sFy8"
+    mapLink: "https://maps.app.goo.gl/gZPAxxayjivgzL8WA"
   },
   {
     name: "A.Y.A Sports and Family Club",
     number: "95006 86829",
     location: "Aavin Milk Depot, Thanjavur",
     image: AYA,
-    mapLink: "https://g.co/kgs/JnEAgVg" // example link
+    mapLink: "https://maps.app.goo.gl/pCiAmgpNza7qcnYK9" // example link
   },
   {
     name: "VelTam",
     number: "94865 79376",
     location: "Indira Nagar, Thanjavur",
     image: VelTam,
-    mapLink: "https://g.co/kgs/zX8aRhj" // example link
+    mapLink: "https://maps.app.goo.gl/DLvcfXHccapghXDp7" // example link
   },
   {
     name: "Balaji Sports Academy",
     number: "73970 80403",
     location: "AVP Azhagammal Nagar, Thanjavur",
     image: Balaji,
-    mapLink: "https://g.co/kgs/HBfiJoV" // example link
+    mapLink: "https://maps.app.goo.gl/DHWNnCf43Ztz3Xns8" // example link
   }
 ];
 
@@ -64,17 +64,17 @@ const Thanjavur = () => {
               <div className="text-left p-5 text-gray-800">
                 <h2 className="text-xl font-bold">{court.name}</h2>
                 <h6 className="mt-1 text-sm">📍 {court.location}</h6>
-                <p className="mt-1 text-sm">📞 {court.number}</p>
-                {court.mapLink && (
-                  <a
-                    href={court.mapLink}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-sm text-blue-600 underline block mt-1"
-                  >
-                    🔗 View on Map
-                  </a>
-                )}
+                <p className="mt-1 text-sm">
+  📞 {court.number} <br />
+ <a
+  href={court.mapLink}
+  target="_blank"
+  rel="noopener noreferrer"
+  className="inline-flex items-center gap-2 mt-2 text-sm bg-cyan-600 text-white px-3 py-1.5 rounded-full hover:bg-cyan-700 transition duration-200 shadow"
+>
+  📍 View on Map
+</a>
+</p>
               </div>
             </div>
           ))}

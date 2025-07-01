@@ -1,9 +1,20 @@
 import React from 'react';
 
+// Importing images for each rule section
+import scoringImg from '../assets/rules/scoring.png';
+import servingImg from '../assets/rules/serving.png';
+import faultsImg from '../assets/rules/faults.png';
+import letsImg from '../assets/rules/lets.png';
+import intervalsImg from '../assets/rules/intervals.png';
+import courtImg from '../assets/rules/court.png';
+import equipmentImg from '../assets/rules/equipment.png';
+import singlesVsDoublesImg from '../assets/rules/singles_vs_doubles.png';
+
 const Rules = () => {
   const ruleSections = [
     {
       title: "Scoring Rules",
+      image: scoringImg,
       points: [
         "Matches are best of 3 games to 21 points.",
         "Every serve scores a point (rally scoring).",
@@ -14,6 +25,7 @@ const Rules = () => {
     },
     {
       title: "Serving Rules",
+      image: servingImg,
       points: [
         "Serve must be hit below the server’s waist height.",
         "The racket must move in an upward direction during serve.",
@@ -24,6 +36,7 @@ const Rules = () => {
     },
     {
       title: "Faults",
+      image: faultsImg,
       points: [
         "Shuttle lands outside boundaries or doesn't clear the net.",
         "Shuttle is hit twice by the same team.",
@@ -34,6 +47,7 @@ const Rules = () => {
     },
     {
       title: "Lets",
+      image: letsImg,
       points: [
         "A let is called for unforeseen interruptions.",
         "If the server serves before the receiver is ready.",
@@ -44,6 +58,7 @@ const Rules = () => {
     },
     {
       title: "Intervals and Ends",
+      image: intervalsImg,
       points: [
         "Players get a 60-second interval at 11 points.",
         "2-minute break between games.",
@@ -53,6 +68,7 @@ const Rules = () => {
     },
     {
       title: "Court & Positioning",
+      image: courtImg,
       points: [
         "Singles court is long and narrow; doubles is short and wide.",
         "In doubles, both players rotate after gaining serve.",
@@ -63,6 +79,7 @@ const Rules = () => {
     },
     {
       title: "Equipment & Conduct",
+      image: equipmentImg,
       points: [
         "Rackets must conform to standard size and string tension.",
         "Shuttles should be feather or synthetic, tested before match.",
@@ -73,6 +90,7 @@ const Rules = () => {
     },
     {
       title: "Singles vs Doubles Court Rules",
+      image: singlesVsDoublesImg,
       points: [
         "Singles court uses the inner side lines and full back boundary lines.",
         "Doubles court uses the outer side lines and short back boundary line for serving.",
@@ -92,19 +110,26 @@ const Rules = () => {
       {ruleSections.map((section, index) => (
         <div key={index} className="mb-12">
           <div className="flex flex-col md:flex-row gap-6 items-start">
-            {/* Placeholder for future image */}
-            <div className="w-full md:w-1/3 h-48 bg-white/10 rounded-lg flex items-center justify-center border border-white/20 text-sm italic">
-              Image Placeholder
+            {/* Image Section - Square & Responsive */}
+            <div className="w-full md:w-1/3 aspect-square rounded-lg overflow-hidden border border-white/20 bg-white/10 flex items-center justify-center">
+              <img
+                src={section.image}
+                alt={`${section.title} illustration`}
+                className="max-w-full max-h-full object-contain"
+              />
             </div>
+
+            {/* Text Section */}
             <div className="w-full md:w-2/3">
               <h2 className="text-2xl md:text-3xl font-semibold mb-4 text-blue-400">
                 {section.title}
               </h2>
-              <ul className="list-disc list-inside space-y-2 text-white/90">
+              <ul className="list-disc list-inside text-left space-y-2 text-white/90">
                 {section.points.map((point, idx) => (
                   <li key={idx}>{point}</li>
                 ))}
               </ul>
+              <div className="w-[100%] h-[2px] bg-white mt-4"></div>
             </div>
           </div>
         </div>
