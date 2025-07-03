@@ -1,8 +1,11 @@
 // HomePage.jsx
 import { useState, useEffect, useRef } from 'react';
 import ScoreBoard from './ScoreBoard';
+import html2pdf from 'html2pdf.js';
+
 
 const HomePage = () => {
+  const matchHistoryRef = useRef(null);
   const [matchStarted, setMatchStarted] = useState(false);
   const [isDoubles, setIsDoubles] = useState(false);
   const [winnerName, setWinnerName] = useState('');
@@ -33,20 +36,53 @@ const HomePage = () => {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [matchStarted]);
 
-  const saveToHistory = (winnerIndex, scores) => {
-    const loserIndex = winnerIndex === 0 ? 1 : 0;
-    const winner = getPlayerName(winnerIndex);
-    const loser = getPlayerName(loserIndex);
-    const score = `${scores[winnerIndex]} - ${scores[loserIndex]}`;
 
-    const newHistory = [
-      ...matchHistory,
-      { winner, loser, score, date: new Date().toLocaleString() },
-    ];
+const downloadMatchHistoryPDF = () => {
+  if (!matchHistoryRef.current) return;
 
-    setMatchHistory(newHistory);
-    localStorage.setItem('matchHistory', JSON.stringify(newHistory));
+  const opt = {
+    margin: 0.5,
+    filename: 'match_history.pdf',
+    image: { type: 'jpeg', quality: 0.98 },
+    html2canvas: { scale: 2 },
+    jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' }
   };
+
+  html2pdf().set(opt).from(matchHistoryRef.current).save();
+};
+
+
+  const saveToHistory = (winnerIndex, scores) => {
+  const loserIndex = winnerIndex === 0 ? 1 : 0;
+  const winner = getPlayerName(winnerIndex);
+  const loser = getPlayerName(loserIndex);
+  const score = `${scores[winnerIndex]} - ${scores[loserIndex]}`;
+  const date = new Date().toLocaleString();
+
+  const newEntry = { winner, loser, score, date };
+  const newHistory = [...matchHistory, newEntry];
+
+  setMatchHistory(newHistory);
+  localStorage.setItem('matchHistory', JSON.stringify(newHistory));
+
+  // Save to Spring Boot
+  fetch('http://localhost:8080/api/matches/save', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      userId: parseInt(userId), // from login
+      ...newEntry
+    })
+  })
+    .then(res => {
+      if (!res.ok) throw new Error('Failed to save match');
+      console.log('Match saved to DB');
+    })
+    .catch(err => console.error(err));
+};
+
 
   const handleChange = (e, index) => {
     const updated = [...formData];
@@ -157,8 +193,11 @@ const HomePage = () => {
         )}
 
         {matchHistory.length > 0 && (
-          <div className="bg-white/10 backdrop-blur-md p-6 rounded-lg shadow-md">
-            <h3 className="text-2xl font-semibold mb-4">\ud83d\udcdc Match History</h3>
+  <div
+    className="bg-white/10 backdrop-blur-md p-6 rounded-lg shadow-md"
+    ref={matchHistoryRef}
+  >
+            <h3 className="text-2xl font-semibold mb-4"> Match History</h3>
             <div className="overflow-x-auto">
               <table className="w-full text-sm text-white text-center border-separate border-spacing-y-2">
                 <thead>
@@ -181,6 +220,16 @@ const HomePage = () => {
                 </tbody>
               </table>
             </div>
+            <div className="text-center mt-4">
+  <button
+    onClick={downloadMatchHistoryPDF}
+    className="bg-blue-600 hover:bg-blue-700 px-5 py-2 rounded-md text-white font-medium mr-2"
+  >
+    ⬇️ Download Match History
+  </button>
+
+</div>
+
             <div className="text-center mt-4">
               <button
                 onClick={handleDeleteHistory}

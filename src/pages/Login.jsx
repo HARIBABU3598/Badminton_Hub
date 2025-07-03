@@ -26,11 +26,12 @@ const Login = () => {
         body: JSON.stringify(form)
       });
 
-      const result = await response.text();
+      const result = await response.json();
 
       if (response.ok) {
-        // Optional: Save username
-        localStorage.setItem('username', result);
+        // Save both userId and username to localStorage
+        localStorage.setItem('userId', result.userId);
+        localStorage.setItem('username', result.username || form.email);
 
         Swal.fire({
           title: 'Login Successful!',
@@ -46,7 +47,7 @@ const Login = () => {
       } else {
         Swal.fire({
           title: 'Login Failed',
-          text: result,
+          text: result.message || 'Invalid credentials',
           icon: 'error',
           confirmButtonText: 'Try Again',
           confirmButtonColor: '#dc2626',

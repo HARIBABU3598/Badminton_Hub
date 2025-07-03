@@ -1,9 +1,24 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import bg from '../assets/bg.jpg';
 import shuttle from '../assets/shuttle.png';
 import { Link } from 'react-router-dom';
 
 const Home = () => {
+  useEffect(() => {
+    // Fetch user data after login (example endpoint)
+    fetch('http://localhost:8080/api/user/me', {
+      method: 'GET',
+      credentials: 'include', // If using cookies/session-based auth
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.userId) {
+          localStorage.setItem('userId', data.userId);
+        }
+      })
+      .catch((err) => console.error('Error fetching user info:', err));
+  }, []);
+
   return (
     <div
       className="bg-cover bg-center h-screen bg-black"
@@ -46,9 +61,11 @@ const Home = () => {
           <p className="text-white text-2xl font-bold">
             training, and tournaments.
           </p>
-          <button className="mt-6 px-6 py-2 bg-green-500 text-white text-xl font-bold rounded font-mono hover:bg-green-400">
-            Get Started
-          </button>
+          <Link to="/tournament">
+            <button className="mt-6 px-6 py-2 bg-green-500 text-white text-xl font-bold rounded font-mono hover:bg-green-400">
+              Get Started
+            </button>
+          </Link>
         </div>
       </div>
     </div>

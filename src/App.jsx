@@ -17,6 +17,7 @@ import WarmDown from './pages/WarmDown'
 import Strokes from './pages/Strokes'
 import Strength from './pages/Strength'
 import Weekly from './pages/Weekly'
+import Club from './pages/Club'
 import Agility from './pages/Agility'
 import Training from './pages/Training'
 import Shots from './pages/Shots'
@@ -51,6 +52,7 @@ function App() {
       <Route path="/strength" element={<Strength/>}/>
       <Route path="/racket" element={<Rackets/>}/>
       <Route path="/shots" element={<Shots/>}/>
+      <Route path="/club" element={<Club/>}/>
       <Route path="/tournament" element={<Tournament/>}/>
       <Route path="/faults" element={<Faults/>}/>
       <Route path="/location" element={<Location/>}/>
