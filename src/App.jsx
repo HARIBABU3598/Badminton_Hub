@@ -12,6 +12,12 @@ import Rules from './pages/Rules'
 import Faults from './pages/Faults'
 import Tournament from "./pages/Tournament";
 import Rackets from './pages/Rackets'
+import WarmUp from "./pages/WarmUp";
+import WarmDown from './pages/WarmDown'
+import Strokes from './pages/Strokes'
+import Strength from './pages/Strength'
+import Weekly from './pages/Weekly'
+import Agility from './pages/Agility'
 import Training from './pages/Training'
 import Shots from './pages/Shots'
 import Location from './pages/CourtLocation'
@@ -37,6 +43,12 @@ function App() {
       <Route path="/history" element={<History/>}/>
       <Route path="/score" element={<Score/>}/>
       <Route path="/rules" element={<Rules/>}/>
+      <Route path="/warmup" element={<WarmUp/>}/>
+      <Route path="/warmdown" element={<WarmDown/>}/>
+      <Route path="/strokes" element={<Strokes/>}/>
+      <Route path="/weekly" element={<Weekly/>}/>
+      <Route path="/agility" element={<Agility/>}/>
+      <Route path="/strength" element={<Strength/>}/>
       <Route path="/racket" element={<Rackets/>}/>
       <Route path="/shots" element={<Shots/>}/>
       <Route path="/tournament" element={<Tournament/>}/>
