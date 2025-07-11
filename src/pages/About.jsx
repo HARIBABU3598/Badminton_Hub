@@ -13,7 +13,7 @@ const About = () => {
         style={{ backdropFilter: 'blur(50px)' }}
       >
         <center>
-          <h1 className="text-4xl font-bold mt-[20px] mb-[10px] bg-white/10 w-[18%] py-1 rounded">
+          <h1 className="text-4xl font-bold mt-[20px] mb-[10px] bg-white/10 w-[50%] py-1 rounded">
             About Us
           </h1>
         </center>
@@ -28,7 +28,7 @@ const About = () => {
             players, and beginners alike. Whether you're picking up a racket for the first time or
             refining your game to compete at the highest level, we’re here to support your journey.
           </p>
-          <center><img src={about} className="h-[300px] w-[700px] mb-[5%] rounded border"/></center>
+          <center><img src={about} className="h-[200px] w-[700px] mb-[5%] rounded border"/></center>
 
           <p className=" text-[20px] ">
             <center><p className='text-2xl bg-red-500 w-[160px] rounded'>What We Offer</p></center><br />
@@ -79,7 +79,7 @@ const About = () => {
             content and features are completely free — because knowledge shared is passion multiplied.
           </p>
 
-          <center><p className="mb-4 text-[20px] bg-black/70 w-[65%] text-center rounded">
+          <center><p className="mb-4 text-[20px] bg-black/70 w-[100%] text-center rounded">
             Thank you for being a part of our community. Let’s grow the game together!
             <br />
             <strong>Badminton Hub — Badminton Begins Here.</strong>

@@ -1,23 +1,8 @@
-import React, { useEffect } from 'react';
 import bg from '../assets/bg.jpg';
 import shuttle from '../assets/shuttle.png';
 import { Link } from 'react-router-dom';
 
 const Home = () => {
-  useEffect(() => {
-    // Fetch user data after login (example endpoint)
-    fetch('http://localhost:8080/api/user/me', {
-      method: 'GET',
-      credentials: 'include', // If using cookies/session-based auth
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.userId) {
-          localStorage.setItem('userId', data.userId);
-        }
-      })
-      .catch((err) => console.error('Error fetching user info:', err));
-  }, []);
 
   return (
     <div

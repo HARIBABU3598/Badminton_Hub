@@ -37,53 +37,52 @@ const components = [
 
 const WarmUp = () => {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 to-black text-white py-12 px-6">
+    <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-slate-900 text-white py-12 px-6 font-sans">
       <div className="max-w-6xl mx-auto">
-        <h1 className="text-center text-4xl md:text-5xl font-bold mb-12 underline decoration-blue-500">
-          Badminton Warm-Up Routine
+        <h1 className="text-center text-4xl md:text-5xl font-extrabold mb-12 bg-gradient-to-r from-blue-400 via-cyan-400 to-indigo-400 text-transparent bg-clip-text animate-pulse">
+          🏸 Badminton Warm-Up Routine
         </h1>
 
         {/* Intro Section */}
-        <div className="flex flex-col-reverse md:flex-row items-center gap-10 mb-14">
-          <div className="md:w-1/2">
-            <p className="text-gray-300 text-base leading-relaxed">
+        <div className="flex flex-col-reverse md:flex-row items-center gap-10 mb-16">
+          <div className="md:w-1/2 text-center md:text-left">
+            <p className="text-gray-300 text-lg leading-relaxed">
               A well-designed warm-up boosts blood flow, prepares joints, and activates muscles for explosive rallies.
-              This routine enhances readiness and reduces the risk of injuries by targeting the body’s most used systems in badminton.
+              This routine enhances readiness and reduces injury risks by targeting the body’s most used systems in badminton.
             </p>
           </div>
           <div className="md:w-1/2 flex justify-center">
             <img
               src={warmUpMain}
               alt="Warm-Up"
-              className="rounded-2xl shadow-2xl w-[320px] h-[240px] object-cover border border-white/20"
+              className="rounded-3xl shadow-2xl w-[320px] h-[240px] object-cover border border-white/20 hover:scale-105 transition duration-500 ease-in-out"
             />
           </div>
         </div>
 
         {/* Component Cards */}
-        <div className="space-y-6">
+        <div className="grid md:grid-cols-2 gap-8">
           {components.map((item, idx) => (
             <div
               key={idx}
-              className="flex flex-col md:flex-row items-center gap-6 bg-white/10 backdrop-blur-md border border-white/20 rounded-xl p-6 shadow-md hover:bg-white/15 transition"
+              className="bg-white/10 backdrop-blur-md border border-white/10 rounded-xl p-6 shadow-lg transition hover:shadow-cyan-500/30 transform hover:scale-[1.02]"
             >
               <img
                 src={item.image}
                 alt={item.title}
-                className="w-[300px] h-[200px] object-cover rounded-lg shadow-lg border border-white/20"
+                className="w-full h-[180px] object-cover rounded-lg shadow-md mb-4 transition duration-300 hover:shadow-lg hover:shadow-blue-500/40"
               />
-              <div>
-                <h2 className="text-xl font-semibold text-blue-400 mb-2">{item.title}</h2>
-                <p className="text-sm text-gray-100">{item.description}</p>
-              </div>
+              <h2 className="text-xl font-bold text-cyan-400 mb-2">{item.title}</h2>
+              <p className="text-sm text-gray-100">{item.description}</p>
             </div>
           ))}
         </div>
 
-        <div className="mt-12 text-center">
+        {/* Back Button */}
+        <div className="mt-16 text-center">
           <Link
             to="/"
-            className="inline-block bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-full transition duration-300"
+            className="inline-block bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-cyan-600 hover:to-blue-700 text-white px-6 py-3 rounded-full shadow-lg hover:shadow-cyan-500/40 transition-all duration-300 text-lg font-semibold"
           >
             ← Back to Training Program
           </Link>

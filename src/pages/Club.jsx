@@ -1,11 +1,22 @@
 import React from 'react';
-import group2020 from '../assets/group2020.jpg';
+import group2020 from '../assets/group20200.jpg';
 import group2021 from '../assets/group2021.jpg';
 import group2022 from '../assets/group2022.jpg';
 import group2023 from '../assets/group2023.jpg';
-// import group2024 from '../assets/group2024.jpg';
 import group2025 from '../assets/group2025.jpg';
 import banner from '../assets/banner.jpg';
+import Bala from '../assets/players/Bala.png'
+import Kathir from '../assets/players/Kathir.png'
+import Munish from '../assets/players/Munish.png'
+import Sabarish from '../assets/players/Sabarish.png'
+import Santhosh from '../assets/players/Santhosh.png'
+import Vasi from '../assets/players/vasi.png'
+import Harikrishnan from '../assets/players/HK.png'
+import Haribabu from '../assets/players/Hari.png'
+import Saravanan from '../assets/players/Sarav.jpg'
+import Yudhan from '../assets/players/Yudhan.png'
+import Arul from '../assets/players/Arul.png'
+
 
 
 const players = [
@@ -32,19 +43,19 @@ const groupPhotos = [
 ];
 
 const player = [
-  { name: "Arul Gnanaprakasam", qualification: "M.B.A" },
-  { name: "Saravana Kumar", qualification: "B.Sc" },
-  { name: "Balamurugan", qualification: "XII" },
-  { name: "Yudhan Prakash", qualification: "B.Com" },
-  { name: "Haribabu", qualification: "B.Tech IT" },
-  { name: "Vasishtan", qualification: "Vis.Com" },
-  { name: "Harikrishnan", qualification: "B.E E.C.E" },
-  { name: "Santhosh", qualification: "B.E CIVIL" },
-  { name: "Sriram", qualification: "XII" },
-  { name: "Balamurugan", qualification: "XII" },
-  { name: "Sabarish", qualification: "X" },
-  { name: "Munish", qualification: "IX" },
-  { name: "Kathirvelan", qualification: "VIII" }
+  { name: "Arul Gnanaprakasam", qualification: "M.B.A" ,image:Arul},
+    { name: "Balamurugan", qualification: "M.A.B.ED",image:Vasi },
+  { name: "Saravana Kumar", qualification: "B.Sc" ,image:Saravanan},
+  { name: "Yudhan Prakash", qualification: "BA. LLB",image:Yudhan },
+  { name: "Haribabu", qualification: "B.Tech IT",image: Haribabu},
+  { name: "Vasishtan", qualification: "Vis.Com" ,image:Vasi},
+  { name: "Harikrishnan", qualification: "B.E E.C.E" ,image:Harikrishnan},
+  { name: "Santhosh", qualification: "B.E CIVIL" ,image:Santhosh},
+  { name: "Sriram", qualification: "XII" ,image:Vasi},
+  { name: "Balamurugan", qualification: "XII" ,image:Bala},
+  { name: "Sabarish", qualification: "X" ,image:Sabarish},
+  { name: "Munish", qualification: "IX",image: Munish},
+  { name: "Kathirvelan", qualification: "VIII" ,image:Kathir}
 ];
 
 
@@ -94,7 +105,7 @@ const ClubPage = () => {
     {player.map((playerr, index) => (
       <div key={index} className="bg-green-50 p-3 rounded-lg flex items-center shadow-md">
         <img
-          src={`https://via.placeholder.com/60x60?text=Img`}
+          src={playerr.image}
           alt={playerr.name}
           className="w-15 h-15 object-cover border border-gray-300 mr-3"
         />
@@ -124,7 +135,12 @@ const ClubPage = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {groupPhotos.map(({ year, image }) => (
               <div key={year}>
-                <img src={image} alt={`Group Photo ${year}`} className="rounded-lg shadow-md" />
+                <img
+  src={image}
+  alt={`Group Photo ${year}`}
+  className="w-full h-64 object-cover rounded-lg shadow-md"
+/>
+
                 <p className="text-center mt-2 font-medium text-gray-700">{year}</p>
               </div>
             ))}

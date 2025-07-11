@@ -1,8 +1,5 @@
-// HomePage.jsx
 import { useState, useEffect, useRef } from 'react';
 import ScoreBoard from './ScoreBoard';
-import html2pdf from 'html2pdf.js';
-
 
 const HomePage = () => {
   const matchHistoryRef = useRef(null);
@@ -14,12 +11,12 @@ const HomePage = () => {
   const [matchHistory, setMatchHistory] = useState([]);
   const scoreBoardRef = useRef();
 
-  const cheerSound = new Audio('/sounds/cheer.mp3');
+  const userId = localStorage.getItem('userId');
 
   useEffect(() => {
-    const saved = JSON.parse(localStorage.getItem('matchHistory'));
-    if (saved) setMatchHistory(saved);
-  }, []);
+  setMatchHistory([]); // start fresh every session
+}, []);
+
 
   useEffect(() => {
     const handleKeyDown = (e) => {
@@ -36,53 +33,61 @@ const HomePage = () => {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [matchStarted]);
 
+  const downloadMatchHistoryCSV = () => {
+    if (matchHistory.length === 0) {
+      alert('No match history to download');
+      return;
+    }
 
-const downloadMatchHistoryPDF = () => {
-  if (!matchHistoryRef.current) return;
+    let csv = 'S.No,Winner,Loser,Score,Date\n';
+    matchHistory.forEach((match, index) => {
+      csv += `${index + 1},${match.winner},${match.loser},${match.score},${match.date}\n`;
+    });
 
-  const opt = {
-    margin: 0.5,
-    filename: 'match_history.pdf',
-    image: { type: 'jpeg', quality: 0.98 },
-    html2canvas: { scale: 2 },
-    jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' }
+    const blob = new Blob([csv], { type: 'text/csv' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `badminton_matches_${new Date().toISOString().split('T')[0]}.csv`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
   };
 
-  html2pdf().set(opt).from(matchHistoryRef.current).save();
-};
-
-
   const saveToHistory = (winnerIndex, scores) => {
-  const loserIndex = winnerIndex === 0 ? 1 : 0;
-  const winner = getPlayerName(winnerIndex);
-  const loser = getPlayerName(loserIndex);
-  const score = `${scores[winnerIndex]} - ${scores[loserIndex]}`;
-  const date = new Date().toLocaleString();
+    if (!scores || scores.length < 2 || isNaN(scores[0]) || isNaN(scores[1])) {
+      console.error('Invalid score data:', scores);
+      return;
+    }
 
-  const newEntry = { winner, loser, score, date };
-  const newHistory = [...matchHistory, newEntry];
+    const loserIndex = winnerIndex === 0 ? 1 : 0;
+    const winner = getPlayerName(winnerIndex);
+    const loser = getPlayerName(loserIndex);
+    const score = `${scores[winnerIndex]} - ${scores[loserIndex]}`;
+    const date = new Date().toLocaleString();
 
-  setMatchHistory(newHistory);
-  localStorage.setItem('matchHistory', JSON.stringify(newHistory));
+    const newEntry = { winner, loser, score, date };
+    const newHistory = [...matchHistory, newEntry];
 
-  // Save to Spring Boot
-  fetch('http://localhost:8080/api/matches/save', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({
-      userId: parseInt(userId), // from login
-      ...newEntry
-    })
-  })
-    .then(res => {
-      if (!res.ok) throw new Error('Failed to save match');
-      console.log('Match saved to DB');
-    })
-    .catch(err => console.error(err));
-};
+    setMatchHistory(newHistory);
 
+    if (userId) {
+      fetch('http://localhost:8080/api/matches/save', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          userId: parseInt(userId),
+          ...newEntry
+        })
+      })
+        .then(res => {
+          if (!res.ok) throw new Error('Failed to save match');
+          console.log('Match saved to DB');
+        })
+        .catch(err => console.error(err));
+    }
+  };
 
   const handleChange = (e, index) => {
     const updated = [...formData];
@@ -110,7 +115,6 @@ const downloadMatchHistoryPDF = () => {
     const winner = getPlayerName(winnerIndex);
     setWinnerName(winner);
     saveToHistory(winnerIndex, scores);
-    cheerSound.play();
   };
 
   const handleReset = () => {
@@ -121,7 +125,6 @@ const downloadMatchHistoryPDF = () => {
   };
 
   const handleDeleteHistory = () => {
-    localStorage.removeItem('matchHistory');
     setMatchHistory([]);
   };
 
@@ -187,17 +190,14 @@ const downloadMatchHistoryPDF = () => {
         {winnerName && (
           <div className="text-center">
             <div className="bg-green-600/90 rounded-lg py-4 px-8 text-xl font-semibold inline-block shadow-md">
-               <span className="text-white">{winnerName}</span> wins the match!
+              <span className="text-white">{winnerName}</span> wins the match!
             </div>
           </div>
         )}
 
         {matchHistory.length > 0 && (
-  <div
-    className="bg-white/10 backdrop-blur-md p-6 rounded-lg shadow-md"
-    ref={matchHistoryRef}
-  >
-            <h3 className="text-2xl font-semibold mb-4"> Match History</h3>
+          <div className="match-history-pdf bg-white/10 backdrop-blur-md p-6 rounded-lg shadow-md" ref={matchHistoryRef}>
+            <h3 className="text-2xl font-semibold mb-4">Match History</h3>
             <div className="overflow-x-auto">
               <table className="w-full text-sm text-white text-center border-separate border-spacing-y-2">
                 <thead>
@@ -220,15 +220,15 @@ const downloadMatchHistoryPDF = () => {
                 </tbody>
               </table>
             </div>
-            <div className="text-center mt-4">
-  <button
-    onClick={downloadMatchHistoryPDF}
-    className="bg-blue-600 hover:bg-blue-700 px-5 py-2 rounded-md text-white font-medium mr-2"
-  >
-    ⬇️ Download Match History
-  </button>
 
-</div>
+            <div className="text-center mt-4">
+              <button
+                onClick={downloadMatchHistoryCSV}
+                className="bg-green-600 hover:bg-green-700 px-5 py-2 rounded-md text-white font-medium"
+              >
+                ⬇️ Download Excel (CSV)
+              </button>
+            </div>
 
             <div className="text-center mt-4">
               <button

@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 
-
 // Match generation function
 const generateLeagueMatches = (teams) => {
   return teams.flatMap((teamA, i) => 
@@ -11,176 +10,84 @@ const generateLeagueMatches = (teams) => {
       result: null,
       started: false,
       completed: false,
-      score: [0, 0] // Track scores for display
+      score: [0, 0]
     }))
   );
 };
+
+// NEW IMPROVED KNOCKOUT GENERATOR
 const generateKnockoutRounds = (teams) => {
+  // Calculate the needed bracket size (next power of 2)
+  const bracketSize = Math.pow(2, Math.ceil(Math.log2(teams.length)));
+  const bracketTeams = [...teams];
+  
+  // Add byes if needed
+  while (bracketTeams.length < bracketSize) {
+    bracketTeams.push(null);
+  }
+
+  // Shuffle teams (but keep byes at the end)
+  const nonByeTeams = bracketTeams.filter(t => t !== null);
+  const shuffledTeams = [...nonByeTeams].sort(() => Math.random() - 0.5);
+  const byes = bracketSize - nonByeTeams.length;
+  for (let i = 0; i < byes; i++) {
+    shuffledTeams.push(null);
+  }
+
+  // Generate rounds
   const rounds = [];
-  let currentRound = [...teams];
-  let roundIndex = 1;
+  let currentRound = shuffledTeams;
+  let roundNumber = 1;
 
   while (currentRound.length > 1) {
     const nextRound = [];
     const roundMatches = [];
 
-    // Shuffle current round to randomize byes
-const shuffled = [...currentRound].sort(() => Math.random() - 0.5);
+    for (let i = 0; i < currentRound.length; i += 2) {
+      const teamA = currentRound[i];
+      const teamB = currentRound[i + 1];
+      const matchId = `R${roundNumber}-M${i/2}`;
 
-for (let i = 0; i < shuffled.length; i += 2) {
-  const teamA = shuffled[i];
-  const teamB = shuffled[i + 1] ?? null;
+      // Handle byes
+      if (!teamA || !teamB) {
+        const winner = teamA || teamB;
+        roundMatches.push({
+          id: matchId,
+          name: `Round ${roundNumber}`,
+          teamA,
+          teamB,
+          result: winner ? `${winner} advances (Bye)` : 'Bye (No winner)',
+          started: false,
+          completed: true,
+          winner: winner || null
+        });
+        if (winner) nextRound.push(winner);
+        continue;
+      }
 
-  let result = null;
-  let completed = false;
-
-  // If teamB is null (bye), auto-advance teamA
-  if (!teamB) {
-    result = `${teamA} advances (Bye)`;
-    completed = true;
-    nextRound.push(teamA);
-  } else {
-    nextRound.push(null); // placeholder to be filled with actual winner
-  }
-
-  roundMatches.push({
-    id: `R${roundIndex}-M${Math.floor(i / 2)}`,
-    name: `Round ${roundIndex}`,
-    teamA,
-    teamB,
-    result,
-    started: !!teamB,
-    completed,
-  });
-}
-
-
+      // Regular match
+      roundMatches.push({
+        id: matchId,
+        name: `Round ${roundNumber}`,
+        teamA,
+        teamB,
+        result: null,
+        started: false,
+        completed: false,
+        winner: null
+      });
+      nextRound.push(null); // Placeholder for winner
+    }
 
     rounds.push(roundMatches);
     currentRound = nextRound;
-    roundIndex++;
+    roundNumber++;
   }
 
   return rounds;
 };
-const KnockoutScheduler = ({ teams, onBack }) => {
-  const [rounds, setRounds] = useState(generateKnockoutRounds(teams));
-  const [currentMatch, setCurrentMatch] = useState(null);
-  const [champion, setChampion] = useState(null);
 
-  const handleStartMatch = (match) => {
-    setCurrentMatch(match);
-  };
 
-  const handleMatchComplete = (updatedMatch) => {
-    setRounds((prevRounds) => {
-      const newRounds = [...prevRounds];
-      for (let r = 0; r < newRounds.length; r++) {
-        newRounds[r] = newRounds[r].map(m => 
-          m.id === updatedMatch.id ? updatedMatch : m
-        );
-      }
-
-      const matchIndex = parseInt(updatedMatch.id.split('-M')[1]);
-      const roundIndex = parseInt(updatedMatch.id.split('-M')[0].substring(1)) - 1;
-
-      const winner = updatedMatch.result.includes(updatedMatch.teamA)
-        ? updatedMatch.teamA
-        : updatedMatch.teamB;
-
-      if (newRounds[roundIndex + 1]) {
-        newRounds[roundIndex + 1][Math.floor(matchIndex / 2)] = {
-          ...newRounds[roundIndex + 1][Math.floor(matchIndex / 2)],
-          [matchIndex % 2 === 0 ? 'teamA' : 'teamB']: winner
-        };
-      } else {
-        setChampion(winner);
-      }
-
-      return newRounds;
-    });
-
-    setCurrentMatch(null);
-  };
-
-  if (currentMatch) {
-    return (
-      <MatchScorePage
-        match={currentMatch}
-        onMatchComplete={handleMatchComplete}
-        onCancel={() => setCurrentMatch(null)}
-      />
-    );
-  }
-
-  return (
-    <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-slate-800 text-white p-6">
-      <div className="max-w-6xl mx-auto">
-        <button
-          onClick={onBack}
-          className="mb-6 px-4 py-2 bg-gray-600 hover:bg-gray-700 rounded flex items-center gap-2"
-        >
-          ← Back to Setup
-        </button>
-
-        <h1 className="text-3xl font-bold text-center mb-8 text-cyan-400">
-          🏆 Knockout Bracket
-        </h1>
-
-        {champion ? (
-          <div className="text-center">
-            <div className="bg-yellow-600 p-6 rounded-xl mb-6">
-              <h2 className="text-4xl font-bold mb-2">🏆 Champion 🏆</h2>
-              <p className="text-5xl font-bold">{champion}</p>
-            </div>
-            <button
-              onClick={onBack}
-              className="px-6 py-3 bg-cyan-600 hover:bg-cyan-700 rounded-lg text-lg font-semibold"
-            >
-              Return to Setup
-            </button>
-          </div>
-        ) : (
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {rounds.map((round, roundIndex) => (
-              <div key={roundIndex} className="bg-white/10 p-4 rounded">
-                <h2 className="text-xl font-semibold text-center mb-4">
-                  Round {roundIndex + 1}
-                </h2>
-                {round.map((match) => (
-                  <div key={match.id} className="mb-4">
-                    <div className="bg-black/20 rounded p-3 flex justify-between items-center mb-2">
-                      <span>{match.teamA || 'TBD'}</span>
-                      <span>vs</span>
-                      <span>{match.teamB || 'TBD'}</span>
-                    </div>
-
-                    {match.completed ? (
-                      <div className="text-green-400 text-center">
-                        {match.result}
-                      </div>
-                    ) : match.teamA && match.teamB ? (
-                      <button
-                        onClick={() => handleStartMatch(match)}
-                        className="w-full bg-cyan-600 hover:bg-cyan-700 py-2 rounded"
-                      >
-                        Start Match
-                      </button>
-                    ) : (
-                      <div className="text-center text-sm text-gray-400">
-                        Waiting for previous match
-                      </div>
-                    )}
-                  </div>
-                ))}
-              </div>
-            ))}
-          </div>
-        )}
-      </div>
-    </div>
-  );
-};
 
 const PlayoffBracket = ({ teams, standings, onBack }) => {
   const [matches, setMatches] = useState([]);
@@ -435,7 +342,6 @@ const MatchScorePage = ({ match, onMatchComplete, onCancel }) => {
   const [scores, setScores] = useState([0, 0]);
   const [winner, setWinner] = useState(null);
   const [gameHistory, setGameHistory] = useState([]);
-  const [showKnockout, setShowKnockout] = useState(false);
 
 
   // Handle keyboard shortcuts
@@ -858,7 +764,6 @@ const TournamentSetup = () => {
   const [teams, setTeams] = useState(['', '']);
   const [showScheduler, setShowScheduler] = useState(false);
   const [matches, setMatches] = useState([]);
-  const [showKnockout, setShowKnockout] = useState(false);
 
   const handleTeamChange = (index, value) => {
     const updated = [...teams];
@@ -867,7 +772,9 @@ const TournamentSetup = () => {
   };
 
   const addTeam = () => {
-    if (teams.length < 8) {
+    if (format === 'league' && teams.length < 8) {
+      setTeams([...teams, '']);
+    } else if (format === 'knockout' && teams.length < 16) {
       setTeams([...teams, '']);
     }
   };
@@ -890,24 +797,11 @@ const TournamentSetup = () => {
     return;
   }
 
-  if (format === 'league') {
-    const generatedMatches = generateLeagueMatches(validTeams);
-    setMatches(generatedMatches);
-    setShowScheduler(true);
-  } else if (format === 'knockout') {
-    setShowKnockout(true);
-  }
+  
 };
 
 
-  if (showKnockout && format === 'knockout') {
-  return (
-    <KnockoutScheduler
-      teams={teams.filter(t => t.trim() !== '')}
-      onBack={() => setShowKnockout(false)}
-    />
-  );
-}
+  
 
 
   if (showScheduler && format === 'league') {
@@ -936,7 +830,7 @@ const TournamentSetup = () => {
           >
             <option value="">-- Select Format --</option>
             <option value="league">League (Round Robin)</option>
-            <option value="knockout" >Knockout</option>
+            <option value="league">Knockout (Coming soon ....)</option>
           </select>
         </div>
 

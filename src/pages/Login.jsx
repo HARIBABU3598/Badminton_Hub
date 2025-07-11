@@ -9,61 +9,83 @@ const Login = () => {
     email: '',
     password: ''
   });
-
+  const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
+
+    if (!form.email || !form.password) {
+      Swal.fire({
+        title: 'Validation Error',
+        text: 'Please fill in all fields',
+        icon: 'error',
+        confirmButtonColor: '#dc2626',
+        background: '#1f2937',
+        color: '#fff'
+      });
+      setLoading(false);
+      return;
+    }
 
     try {
       const response = await fetch('http://localhost:5174/login', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(form)
+        headers: { 
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify({
+          email: form.email,
+          password: form.password
+        })
       });
 
-      const result = await response.json();
-
-      if (response.ok) {
-        // Save both userId and username to localStorage
-        localStorage.setItem('userId', result.userId);
-        localStorage.setItem('username', result.username || form.email);
-
-        Swal.fire({
-          title: 'Login Successful!',
-          text: 'Welcome back!',
-          icon: 'success',
-          confirmButtonText: 'Go to Dashboard',
-          confirmButtonColor: '#2563eb',
-          background: '#1f2937',
-          color: '#fff'
-        }).then(() => {
-          navigate('/dashboard');
-        });
-      } else {
-        Swal.fire({
-          title: 'Login Failed',
-          text: result.message || 'Invalid credentials',
-          icon: 'error',
-          confirmButtonText: 'Try Again',
-          confirmButtonColor: '#dc2626',
-          background: '#1f2937',
-          color: '#fff'
-        });
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(errorText || 'Login failed');
       }
-    } catch (err) {
-      console.error(err);
+
+      const text = await response.text(); // Expecting "Login successful"
+      console.log('Login response:', text);
+
       Swal.fire({
-        title: 'Error',
-        text: 'Something went wrong!',
+        title: 'Login Successful!',
+        text: `Welcome back, ${form.email.split('@')[0]}!`,
+        icon: 'success',
+        confirmButtonText: 'Continue',
+        confirmButtonColor: '#2563eb',
+        background: '#1f2937',
+        color: '#fff',
+        timer: 2000,
+        timerProgressBar: true
+      }).then(() => {
+        navigate('/dashboard');
+      });
+
+    } catch (err) {
+      console.error('Login error:', err);
+      Swal.fire({
+        title: 'Login Failed',
+        text: err.message || 'Invalid email or password',
         icon: 'error',
+        confirmButtonText: 'Try Again',
+        confirmButtonColor: '#dc2626',
         background: '#1f2937',
         color: '#fff'
       });
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -87,40 +109,41 @@ const Login = () => {
           <div className="flex flex-col md:flex-row h-[79%] w-[60%] max-w-4xl bg-white/5 rounded-lg border border-white/20 backdrop-blur-sm overflow-hidden">
             <div className="w-full md:w-[60%] p-8 flex flex-col justify-center">
               <form className="space-y-4" onSubmit={handleSubmit}>
-                <div>
+                <input
+                  type="email"
+                  name="email"
+                  value={form.email}
+                  onChange={handleChange}
+                  placeholder="Email Address"
+                  className="w-full px-4 py-3 bg-white/5 border border-white/20 rounded-lg text-white placeholder-white/50 focus:outline-none focus:ring-1 focus:ring-white"
+                  required
+                  autoComplete="username"
+                />
+                <div className="relative">
                   <input
-                    type="email"
-                    name="email"
-                    value={form.email}
-                    onChange={handleChange}
-                    placeholder="Email Address"
-                    className="w-full px-4 py-3 bg-white/5 border border-white/20 rounded-lg text-white placeholder-white/50 focus:outline-none focus:ring-1 focus:ring-white"
-                    required
-                  />
-                </div>
-
-                <div>
-                  <input
-                    type="password"
+                    type={showPassword ? "text" : "password"}
                     name="password"
                     value={form.password}
                     onChange={handleChange}
                     placeholder="Password"
-                    className="w-full px-4 py-3 bg-white/5 border border-white/20 rounded-lg text-white placeholder-white/50 focus:outline-none focus:ring-1 focus:ring-white"
+                    className="w-full px-4 py-3 bg-white/5 border border-white/20 rounded-lg text-white placeholder-white/50 focus:outline-none focus:ring-1 focus:ring-white pr-10"
                     required
+                    autoComplete="current-password"
                   />
-                  <div className="flex justify-end mt-2">
-                    <a href="/forgot-password" className="text-sm text-blue-300 hover:underline">
-                      Forgot Password?
-                    </a>
-                  </div>
+                  <button
+                    type="button"
+                    onClick={togglePasswordVisibility}
+                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-white/50 hover:text-white"
+                  >
+                    {showPassword ? 'Hide' : 'Show'}
+                  </button>
                 </div>
-
                 <button
                   type="submit"
-                  className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-4 rounded-lg transition duration-200 mt-4"
+                  disabled={loading}
+                  className={`w-full ${loading ? 'bg-blue-700' : 'bg-blue-600 hover:bg-blue-700'} text-white font-medium py-3 px-4 rounded-lg transition duration-200 mt-4 flex items-center justify-center`}
                 >
-                  Sign In
+                  {loading ? 'Signing In...' : 'Sign In'}
                 </button>
               </form>
 
