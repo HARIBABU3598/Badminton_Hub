@@ -15,6 +15,7 @@ import DiveDefense from '../assets/videos/Dive_defence.mp4'
 import Lift from '../assets/videos/Lift.mp4'
 import Drive from '../assets/videos/Drive.mp4'
 import Clear from '../assets/videos/Clear.mp4'
+import {Link} from 'react-router-dom'
 
 const getVideoForShot = (name) => {
   if (name.includes('Backhand High')) return backhandHigh;
@@ -325,6 +326,14 @@ const Shots = () => {
             </div>
           </div>
         ))}
+        <div className="mt-12 text-center">
+          <Link
+            to="/dashboard"
+            className="inline-block bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-full transition duration-300"
+          >
+            ← Back to Dashboard
+          </Link>
+        </div>
       </div>
     </div>
   );

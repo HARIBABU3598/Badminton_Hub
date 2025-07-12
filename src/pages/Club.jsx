@@ -16,6 +16,7 @@ import Haribabu from '../assets/players/Hari.png'
 import Saravanan from '../assets/players/Sarav.jpg'
 import Yudhan from '../assets/players/Yudhan.png'
 import Arul from '../assets/players/Arul.png'
+import Sriram from '../assets/players/sriram.png'
 
 
 
@@ -51,7 +52,7 @@ const player = [
   { name: "Vasishtan", qualification: "Vis.Com" ,image:Vasi},
   { name: "Harikrishnan", qualification: "B.E E.C.E" ,image:Harikrishnan},
   { name: "Santhosh", qualification: "B.E CIVIL" ,image:Santhosh},
-  { name: "Sriram", qualification: "XII" ,image:Vasi},
+  { name: "Vetrivelan", qualification: "XII" ,image:Sriram},
   { name: "Balamurugan", qualification: "XII" ,image:Bala},
   { name: "Sabarish", qualification: "X" ,image:Sabarish},
   { name: "Munish", qualification: "IX",image: Munish},
@@ -101,22 +102,21 @@ const ClubPage = () => {
 
         <section className="bg-white p-6 rounded-xl shadow-md mb-6 border">
   <h2 className="text-2xl font-semibold text-green-700 mb-4">Our Players</h2>
-  <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+  <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6">
     {player.map((playerr, index) => (
-      <div key={index} className="bg-green-50 p-3 rounded-lg flex items-center shadow-md">
+      <div key={index} className="bg-green-50 p-4 rounded-lg flex flex-col items-center shadow-md text-center">
         <img
           src={playerr.image}
           alt={playerr.name}
-          className="w-15 h-15 object-cover border border-gray-300 mr-3"
+          className="w-24 h-24 rounded-full object-cover border border-gray-300 mb-2"
         />
-        <div>
-          <p className="text-green-900 font-medium">{playerr.name}</p>
-          <p className="text-sm text-gray-700">Qualification: {playerr.qualification}</p>
-        </div>
+        <p className="text-green-900 font-semibold text-sm sm:text-base">{playerr.name}</p>
+        <p className="text-sm text-gray-700 mt-1">Qualification: {playerr.qualification}</p>
       </div>
     ))}
   </div>
 </section>
+
 
 
 

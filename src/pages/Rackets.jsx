@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import {Link} from 'react-router-dom'
 import teni from '../assets/yonex/10i.png'
 import T7i from '../assets/yonex/27i.png'
 import light71 from '../assets/yonex/71light.png'
@@ -413,7 +414,15 @@ const Rackets = () => {
 
   return (
     <div className="p-6 text-white bg-gradient-to-b from-gray-900 to-black min-h-screen">
-      <h1 className="text-3xl font-bold text-center mb-8">🏸 Badminton Rackets Overview</h1>
+      <h1 className="text-3xl font-bold text-center ">🏸 Badminton Rackets Overview</h1>
+      <div className="mt-12 text-center">
+          <Link
+            to="/dashboard"
+            className="inline-block bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-full transition duration-300 mb-5"
+          >
+            ← Back to Dashboard
+          </Link>
+        </div>
 
       {/* Filters */}
       <div className="max-w-6xl mx-auto mb-10 bg-white/5 p-6 rounded-xl shadow-lg border border-white/10">

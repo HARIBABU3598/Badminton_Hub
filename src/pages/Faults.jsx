@@ -4,7 +4,7 @@ import Serve from '../assets/faults/serve.png'
 import Rally from '../assets/faults/rally.png'
 import Net from '../assets/faults/net.png'
 import Conduct from '../assets/faults/conduct.png'
-
+import {Link} from 'react-router-dom'
 const faultCategories = [
   {
     title: "Service Faults",
@@ -88,6 +88,14 @@ const Faults = () => {
           </div>
         </div>
       ))}
+      <div className="mt-12 text-center">
+          <Link
+            to="/dashboard"
+            className="inline-block bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-full transition duration-300"
+          >
+            ← Back to Dashboard
+          </Link>
+        </div>
     </div>
   );
 };

@@ -1,172 +1,137 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import Swal from 'sweetalert2';
-import bg from '../assets/bg.jpg';
-import loginImage from '../assets/Login.jpg';
+import { Link, useNavigate } from 'react-router-dom';
 
 const Login = () => {
   const [form, setForm] = useState({
     email: '',
     password: ''
   });
-  const [loading, setLoading] = useState(false);
-  const [showPassword, setShowPassword] = useState(false);
+
   const navigate = useNavigate();
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const togglePasswordVisibility = () => {
-    setShowPassword(!showPassword);
-  };
-
-  const handleSubmit = async (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
-    setLoading(true);
-
-    if (!form.email || !form.password) {
-      Swal.fire({
-        title: 'Validation Error',
-        text: 'Please fill in all fields',
-        icon: 'error',
-        confirmButtonColor: '#dc2626',
-        background: '#1f2937',
-        color: '#fff'
-      });
-      setLoading(false);
-      return;
-    }
-
     try {
-      const response = await fetch('http://localhost:5174/login', {
-        method: 'POST',
-        headers: { 
-          'Content-Type': 'application/json',
-          'Accept': 'application/json'
-        },
-        body: JSON.stringify({
-          email: form.email,
-          password: form.password
-        })
-      });
-
-      if (!response.ok) {
-        const errorText = await response.text();
-        throw new Error(errorText || 'Login failed');
-      }
-
-      const text = await response.text(); // Expecting "Login successful"
-      console.log('Login response:', text);
-
+      const res = await axios.post('http://localhost:5174/login', form);
       Swal.fire({
-        title: 'Login Successful!',
-        text: `Welcome back, ${form.email.split('@')[0]}!`,
         icon: 'success',
-        confirmButtonText: 'Continue',
-        confirmButtonColor: '#2563eb',
-        background: '#1f2937',
-        color: '#fff',
-        timer: 2000,
-        timerProgressBar: true
+        title: 'Login Successful!',
+        confirmButtonColor: '#3085d6'
       }).then(() => {
-        navigate('/dashboard');
+        setForm({ email: '', password: '' });
+        navigate('/dashboard'); // redirect to dashboard
       });
-
     } catch (err) {
-      console.error('Login error:', err);
       Swal.fire({
-        title: 'Login Failed',
-        text: err.message || 'Invalid email or password',
         icon: 'error',
-        confirmButtonText: 'Try Again',
-        confirmButtonColor: '#dc2626',
-        background: '#1f2937',
-        color: '#fff'
+        title: 'Login Failed',
+        text: err.response?.data || 'Invalid credentials!',
+        confirmButtonColor: '#d33'
       });
-    } finally {
-      setLoading(false);
     }
   };
 
   return (
-    <div
-      className="bg-cover bg-center h-screen bg-black flex items-center justify-end"
-      style={{ backgroundImage: `url(${bg})` }}
-    >
-      <div
-        className="h-[100%] w-[98%] mr-[1%] rounded border border-white/30 overflow-hidden"
-        style={{
-          backdropFilter: "blur(12px)",
-          backgroundColor: "rgba(0, 0, 0, 0.6)"
-        }}
-      >
-        <div className="flex flex-col items-center pt-3 h-full">
-          <h1 className="text-white text-4xl font-semibold mb-3 bg-white/10 px-8 py-1 rounded backdrop-blur-sm">
-            Welcome Back
-          </h1>
-
-          <div className="flex flex-col md:flex-row h-[79%] w-[60%] max-w-4xl bg-white/5 rounded-lg border border-white/20 backdrop-blur-sm overflow-hidden">
-            <div className="w-full md:w-[60%] p-8 flex flex-col justify-center">
-              <form className="space-y-4" onSubmit={handleSubmit}>
-                <input
-                  type="email"
-                  name="email"
-                  value={form.email}
-                  onChange={handleChange}
-                  placeholder="Email Address"
-                  className="w-full px-4 py-3 bg-white/5 border border-white/20 rounded-lg text-white placeholder-white/50 focus:outline-none focus:ring-1 focus:ring-white"
-                  required
-                  autoComplete="username"
-                />
-                <div className="relative">
-                  <input
-                    type={showPassword ? "text" : "password"}
-                    name="password"
-                    value={form.password}
-                    onChange={handleChange}
-                    placeholder="Password"
-                    className="w-full px-4 py-3 bg-white/5 border border-white/20 rounded-lg text-white placeholder-white/50 focus:outline-none focus:ring-1 focus:ring-white pr-10"
-                    required
-                    autoComplete="current-password"
-                  />
-                  <button
-                    type="button"
-                    onClick={togglePasswordVisibility}
-                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-white/50 hover:text-white"
-                  >
-                    {showPassword ? 'Hide' : 'Show'}
-                  </button>
-                </div>
-                <button
-                  type="submit"
-                  disabled={loading}
-                  className={`w-full ${loading ? 'bg-blue-700' : 'bg-blue-600 hover:bg-blue-700'} text-white font-medium py-3 px-4 rounded-lg transition duration-200 mt-4 flex items-center justify-center`}
-                >
-                  {loading ? 'Signing In...' : 'Sign In'}
-                </button>
-              </form>
-
-              <p className="text-white/70 text-sm mt-6 text-center">
-                Don't have an account?{' '}
-                <a href="/register" className="text-blue-300 hover:underline">
-                  Register
-                </a>
-              </p>
-            </div>
-
-            <div className="hidden md:block md:w-[40%] h-full overflow-hidden">
-              <img
-                src={loginImage}
-                alt="Login illustration"
-                className="h-[100%] w-full object-cover"
-              />
-            </div>
-          </div>
-        </div>
+    <div style={styles.wrapper}>
+      <div style={styles.card}>
+        <h2 style={styles.title}>Login</h2>
+        <form onSubmit={handleLogin} style={styles.form} autoComplete="off">
+          <input
+            type="email"
+            name="email"
+            placeholder="Email"
+            value={form.email}
+            onChange={handleChange}
+            style={styles.input}
+            required
+            autoComplete="off"
+          />
+          <input
+            type="password"
+            name="password"
+            placeholder="Password"
+            value={form.password}
+            onChange={handleChange}
+            style={styles.input}
+            required
+            autoComplete="new-password"
+          />
+          <button type="submit" style={styles.button}>Login</button>
+        </form>
+        <p style={styles.registerText}>
+          Don't have an account? <Link to="/register" style={styles.registerLink}>Register</Link>
+        </p>
       </div>
     </div>
   );
+};
+
+const styles = {
+  wrapper: {
+    height: '100vh',
+    background: 'linear-gradient(135deg, #0f2027, #203a43, #2c5364)',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    fontFamily: 'Segoe UI, sans-serif',
+  },
+  card: {
+    background: 'rgba(0, 0, 0, 0.4)',
+    backdropFilter: 'blur(10px)',
+    borderRadius: '20px',
+    padding: '40px',
+    boxShadow: '0 8px 32px rgba(0, 0, 0, 0.6)',
+    textAlign: 'center',
+    width: '100%',
+    maxWidth: '400px',
+    color: '#ffffff',
+  },
+  title: {
+    marginBottom: '24px',
+    fontSize: '28px',
+    fontWeight: '600',
+  },
+  form: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '15px',
+  },
+  input: {
+    padding: '12px 16px',
+    borderRadius: '10px',
+    border: '1px solid #444',
+    backgroundColor: '#222',
+    color: '#fff',
+    fontSize: '16px',
+    outline: 'none',
+  },
+  button: {
+    padding: '14px',
+    background: 'linear-gradient(90deg, #00b4db, #0083b0)',
+    border: 'none',
+    borderRadius: '10px',
+    fontSize: '16px',
+    color: '#fff',
+    fontWeight: 'bold',
+    cursor: 'pointer',
+    transition: 'transform 0.2s ease-in-out',
+  },
+  registerText: {
+    marginTop: '16px',
+    fontSize: '14px',
+    color: '#ccc',
+  },
+  registerLink: {
+    color: '#00d2ff',
+    fontWeight: 'bold',
+    textDecoration: 'none',
+  },
 };
 
 export default Login;

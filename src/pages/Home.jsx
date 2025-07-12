@@ -1,57 +1,57 @@
+import { Link } from 'react-router-dom';
 import bg from '../assets/bg.jpg';
 import shuttle from '../assets/shuttle.png';
-import { Link } from 'react-router-dom';
 
 const Home = () => {
-
   return (
     <div
-      className="bg-cover bg-center h-screen bg-black"
+      className="min-h-screen bg-cover bg-center relative"
       style={{ backgroundImage: `url(${bg})` }}
     >
-      {/* Header */}
-      <div className="flex items-center justify-between px-8 py-4">
-        <div className="flex items-center space-x-4">
-          <img src={shuttle} alt="Shuttlecock" className="w-16 h-auto" />
-          <h1 className="text-4xl font-bold text-white font-serif">Badminton Hub</h1>
-        </div>
+      {/* Overlay */}
+      <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/60 to-black/80"></div>
 
-        <div className="flex space-x-4">
-          <Link to="/about">
-            <button className="bg-white px-4 py-2 font-bold rounded font-mono hover:bg-gray-200">
-              About Us
-            </button>
-          </Link>
-          <Link to="/contact">
-            <button className="bg-white px-4 py-2 font-bold rounded font-mono hover:bg-gray-200">
-              Contact
-            </button>
-          </Link>
-          <button className="bg-yellow-500 px-4 py-2 font-bold rounded font-mono hover:bg-yellow-300">
-            Our Club
-          </button>
-        </div>
-      </div>
+      {/* Content */}
+      <div className="relative z-10 flex flex-col min-h-screen">
+        {/* Header */}
+        <header className="bg-gradient-to-r from-purple-800 via-indigo-900 to-blue-900 bg-opacity-90 text-white px-6 py-4 flex flex-col md:flex-row justify-between items-center shadow-md">
+          <div className="flex items-center gap-3 mb-3 md:mb-0">
+            <img src={shuttle} alt="Shuttle" className="w-12 h-12" />
+            <h1 className="text-2xl sm:text-3xl font-bold font-serif">Badminton Hub</h1>
+          </div>
 
-      {/* Welcome Message */}
-      <div className="flex justify-end pr-16 pt-24">
-        <div
-          className="max-w-xl p-6 rounded text-left backdrop-blur-md"
-          style={{ backgroundColor: 'rgba(0, 0, 0, 0.5)' }}
-        >
-          <p className="text-white text-5xl font-bold">Smash your limits</p>
-          <p className="mt-4 text-white text-2xl font-bold">
-            Your ultimate destination for badminton news, gear,
-          </p>
-          <p className="text-white text-2xl font-bold">
-            training, and tournaments.
-          </p>
-          <Link to="/tournament">
-            <button className="mt-6 px-6 py-2 bg-green-500 text-white text-xl font-bold rounded font-mono hover:bg-green-400">
-              Get Started
-            </button>
-          </Link>
-        </div>
+          <nav className="flex gap-3 text-sm sm:text-base">
+            <Link to="/about">
+              <button className="bg-white text-black px-4 py-2 rounded hover:bg-gray-200 font-semibold transition-all">About</button>
+            </Link>
+            <Link to="/contact">
+              <button className="bg-white text-black px-4 py-2 rounded hover:bg-gray-200 font-semibold transition-all">Contact</button>
+            </Link>
+            <Link to="/club">
+              <button className="bg-yellow-400 text-black px-4 py-2 rounded hover:bg-yellow-300 font-semibold transition-all">Our Club</button>
+            </Link>
+          </nav>
+        </header>
+
+        {/* Main Section */}
+        <main className="flex flex-1 items-center justify-center px-6 py-10">
+          <div className="w-full max-w-4xl bg-white/10 border border-white/20 backdrop-blur-lg p-8 rounded-xl shadow-xl text-center text-white">
+            <h2 className="text-4xl sm:text-5xl font-extrabold mb-4">Smash Your Limits</h2>
+            <p className="text-base sm:text-lg text-gray-300 mb-6">
+              Discover tournaments, connect with clubs, and level up your badminton journey.
+            </p>
+            <Link to="/register">
+              <button className="px-6 py-3 text-lg font-bold rounded bg-teal-500 hover:bg-teal-400 transition-all">
+                Get Started
+              </button>
+            </Link>
+          </div>
+        </main>
+
+        {/* Footer (Optional) */}
+        <footer className="text-center text-sm text-gray-400 py-4">
+          © {new Date().getFullYear()} Badminton Hub. All rights reserved.
+        </footer>
       </div>
     </div>
   );

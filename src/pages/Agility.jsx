@@ -1,33 +1,63 @@
 import React from 'react';
 import agilityImg from '../assets/training/Agility.png';
 import { Link } from 'react-router-dom';
+import cone from '../assets/agility/cone.png';
+import ladder from '../assets/agility/ladder.png';
+import rope from '../assets/agility/rope.png';
+import split from '../assets/agility/split.png';
+import sprint from '../assets/agility/sprint.png';
 
 const components = [
   {
     title: "1. Ladder Drills",
-    description: "Improve foot speed and coordination with high-knee and lateral step patterns using an agility ladder.",
+    points: [
+      "Enhances foot speed, coordination, and agility.",
+      "Includes drills like high-knees, in-and-outs, and lateral steps.",
+      "Helps with fast direction changes on court."
+    ],
+    image: ladder
   },
   {
     title: "2. Cone Drills",
-    description: "Practice sharp directional changes and acceleration with zig-zag or T-pattern cone setups.",
+    points: [
+      "Improves body control and acceleration.",
+      "Use zig-zag or T-patterns to simulate rally movement.",
+      "Develops sharp directional reflexes."
+    ],
+    image: cone
   },
   {
     title: "3. Split-Step Practice",
-    description: "Reinforce explosive reactions by timing split-steps to simulated opponent movements.",
+    points: [
+      "Sharpens reaction time and anticipation.",
+      "Focuses on landing in a balanced stance before moving.",
+      "Mimics opponent shuttle timing for better readiness."
+    ],
+    image: split
   },
   {
     title: "4. Jump Rope",
-    description: "Enhance rhythm, endurance, and lower-body coordination through fast-paced skipping routines.",
+    points: [
+      "Boosts endurance and foot rhythm.",
+      "Develops ankle strength and agility.",
+      "Includes double-unders, single-leg hops, and fast skips."
+    ],
+    image: rope
   },
   {
     title: "5. Court Sprint Intervals",
-    description: "Simulate rally movements with short bursts of sprints to each court corner, boosting match fitness.",
-  },
+    points: [
+      "Simulates in-game shuttle runs corner to corner.",
+      "Increases match fitness and movement efficiency.",
+      "Focus on quick recovery and explosive steps."
+    ],
+    image: sprint
+  }
 ];
 
 const Agility = () => {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 to-black text-white py-12 px-6">
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 to-black text-white py-12 px-4 sm:px-6 lg:px-12">
       <div className="max-w-6xl mx-auto">
         <h1 className="text-center text-4xl md:text-5xl font-bold underline decoration-blue-500 mb-12">
           Agility Training in Badminton
@@ -36,7 +66,7 @@ const Agility = () => {
         {/* Hero Section */}
         <div className="flex flex-col-reverse md:flex-row items-center gap-10 mb-14">
           <div className="md:w-1/2">
-            <p className="text-gray-300 text-base leading-relaxed">
+            <p className="text-gray-300 text-lg leading-relaxed">
               Agility is vital in badminton for sharp directional changes and quick recovery. These drills develop explosive court speed, reactive footwork, and dynamic balance for fast-paced matches.
             </p>
           </div>
@@ -50,20 +80,26 @@ const Agility = () => {
         </div>
 
         {/* Training Components */}
-        <div className="space-y-6">
+        <div className="space-y-8">
           {components.map((item, idx) => (
             <div
               key={idx}
-              className="flex flex-col md:flex-row items-center gap-6 bg-white/10 backdrop-blur-md border border-white/20 rounded-xl p-6 shadow-md hover:bg-white/15 transition"
+              className="flex flex-col md:flex-row gap-6 bg-white/10 backdrop-blur-md border border-white/20 rounded-xl p-6 shadow-md hover:bg-white/15 transition"
             >
-              <img
-                src={item.image}
-                alt={item.title}
-                className="w-[300px] h-[200px] object-cover rounded-lg shadow-lg border border-white/20"
-              />
-              <div>
-                <h2 className="text-xl font-semibold text-blue-400 mb-2">{item.title}</h2>
-                <p className="text-sm text-gray-100">{item.description}</p>
+              <div className="md:w-[280px] flex-shrink-0">
+                <img
+                  src={item.image}
+                  alt={item.title}
+                  className="w-full h-[300px] object-cover rounded-lg border border-white/20 shadow-lg"
+                />
+              </div>
+              <div className="flex-1">
+                <h2 className="text-xl font-semibold text-blue-400 mb-3">{item.title}</h2>
+                <ul className="list-disc list-inside text-left text-gray-100 space-y-1">
+                  {item.points.map((point, i) => (
+                    <li key={i}>{point}</li>
+                  ))}
+                </ul>
               </div>
             </div>
           ))}
@@ -72,7 +108,7 @@ const Agility = () => {
         {/* Back Button */}
         <div className="mt-12 text-center">
           <Link
-            to="/"
+            to="/training"
             className="inline-block bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-full transition duration-300"
           >
             ← Back to Training Program

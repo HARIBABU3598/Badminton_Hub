@@ -1,154 +1,145 @@
 import React, { useState } from 'react';
-import bg from '../assets/bg.jpg';
-import register from '../assets/Register.png';
+import axios from 'axios';
+import Swal from 'sweetalert2';
+import { Link } from 'react-router-dom';
 
 const Register = () => {
   const [form, setForm] = useState({
-    name: '',
+    username: '',
     email: '',
-    password: '',
-    confirmPassword: ''
+    password: ''
   });
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = async (e) => {
+  const handleRegister = async (e) => {
     e.preventDefault();
-
-    if (form.password !== form.confirmPassword) {
-      alert('Passwords do not match!');
-      return;
-    }
-
     try {
-      const response = await fetch('http://localhost:5174/users', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          name: form.name,
-          email: form.email,
-          password: form.password
-        })
+      const res = await axios.post('http://localhost:5174/register', form);
+      Swal.fire({
+        icon: 'success',
+        title: 'Registered Successfully!',
+        confirmButtonColor: '#3085d6'
       });
-
-      const result = await response.text();
-
-      if (response.ok) {
-        alert('Registered successfully: ' + result);
-        setForm({
-          name: '',
-          email: '',
-          password: '',
-          confirmPassword: ''
-        });
-      } else {
-        alert('Registration failed: ' + result);
-      }
+      setForm({ username: '', email: '', password: '' });
     } catch (err) {
-      console.error(err);
-      alert('An error occurred during registration.');
+      Swal.fire({
+        icon: 'error',
+        title: 'Registration Failed',
+        text: err.response?.data || 'Something went wrong!',
+        confirmButtonColor: '#d33'
+      });
     }
   };
 
   return (
-    <div
-      className="bg-cover bg-center h-screen bg-black flex items-center justify-end"
-      style={{ backgroundImage: `url(${bg})` }}
-    >
-      <div 
-        className="h-[100%] w-[98%] mr-[1%] rounded border border-white/30"
-        style={{
-          backdropFilter: "blur(12px)",
-          backgroundColor: "rgba(0, 0, 0, 0.6)"
-        }}
-      >
-        <div className="flex flex-col items-center pt-8">
-          <h1 className="text-white text-4xl font-semibold mb-5 bg-white/10 px-8 py-1 rounded backdrop-blur-sm">
-            Create Account
-          </h1>
+    <div style={styles.wrapper}>
+      <div style={styles.card}>
+        <h2 style={styles.title}>Register</h2>
+        <form onSubmit={handleRegister} style={styles.form} autoComplete="off">
+  <input
+    type="text"
+    name="username"
+    placeholder="Username"
+    value={form.username}
+    onChange={handleChange}
+    style={styles.input}
+    required
+    autoComplete="off"
+  />
+  <input
+    type="email"
+    name="email"
+    placeholder="Email"
+    value={form.email}
+    onChange={handleChange}
+    style={styles.input}
+    required
+    autoComplete="off"
+  />
+  <input
+    type="password"
+    name="password"
+    placeholder="Password"
+    value={form.password}
+    onChange={handleChange}
+    style={styles.input}
+    required
+    autoComplete="new-password"
+  />
+  <button type="submit" style={styles.button}>Sign Up</button>
+</form>
 
-          <div className="flex h-[80%] w-[60%] ml-[25%] bg-white/5 rounded-lg border border-white/20 backdrop-blur-sm mr-[25%]">
-            <div className="h-[100%] w-[61%] rounded p-8">
-              <form className="space-y-6" onSubmit={handleSubmit}>
-                <div>
-                  <input 
-                    type="text" 
-                    name="name"
-                    value={form.name}
-                    onChange={handleChange}
-                    placeholder="Username" 
-                    className="w-full px-4 py-3 bg-white/5 border border-white/20 rounded-lg text-white placeholder-white/50 focus:outline-none focus:ring-1 focus:ring-white"
-                    required
-                  />
-                </div>
-
-                <div>
-                  <input 
-                    type="email" 
-                    name="email"
-                    value={form.email}
-                    onChange={handleChange}
-                    placeholder="Email Address" 
-                    className="w-full px-4 py-3 bg-white/5 border border-white/20 rounded-lg text-white placeholder-white/50 focus:outline-none focus:ring-1 focus:ring-white"
-                    required
-                  />
-                </div>
-
-                <div>
-                  <input 
-                    type="password" 
-                    name="password"
-                    value={form.password}
-                    onChange={handleChange}
-                    placeholder="Password" 
-                    className="w-full px-4 py-3 bg-white/5 border border-white/20 rounded-lg text-white placeholder-white/50 focus:outline-none focus:ring-1 focus:ring-white"
-                    required
-                    minLength="8"
-                  />
-                </div>
-
-                <div>
-                  <input 
-                    type="password" 
-                    name="confirmPassword"
-                    value={form.confirmPassword}
-                    onChange={handleChange}
-                    placeholder="Confirm Password" 
-                    className="w-full px-4 py-3 bg-white/5 border border-white/20 rounded-lg text-white placeholder-white/50 focus:outline-none focus:ring-1 focus:ring-white"
-                    required
-                  />
-                </div>
-
-                <button
-                  type="submit"
-                  className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-4 rounded-lg transition duration-200 mt-6"
-                >
-                  Register Now
-                </button>
-              </form>
-
-              <p className="text-white/70 text-sm mt-4 text-center">
-                Already have an account?{' '}
-                <a href="/login" className="text-blue-300 hover:underline">
-                  Sign In
-                </a>
-              </p>
-            </div>
-
-            <div className="h-[100%] w-[39%] overflow-hidden rounded-r-lg">
-              <img 
-                src={register} 
-                alt="Registration illustration" 
-                className="h-full w-full object-cover"
-              />
-            </div>
-          </div>
-        </div>
+        <p style={styles.loginText}>
+          Already have an account? <Link to="/login" style={styles.loginLink}>Login</Link>
+        </p>
       </div>
     </div>
   );
+};
+
+const styles = {
+  wrapper: {
+    height: '100vh',
+    background: 'linear-gradient(135deg, #0f2027, #203a43, #2c5364)',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    fontFamily: 'Segoe UI, sans-serif',
+  },
+  card: {
+    background: 'rgba(0, 0, 0, 0.4)',
+    backdropFilter: 'blur(10px)',
+    borderRadius: '20px',
+    padding: '40px',
+    boxShadow: '0 8px 32px rgba(0, 0, 0, 0.6)',
+    textAlign: 'center',
+    width: '100%',
+    maxWidth: '400px',
+    color: '#ffffff',
+  },
+  title: {
+    marginBottom: '24px',
+    fontSize: '28px',
+    fontWeight: '600',
+  },
+  form: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '15px',
+  },
+  input: {
+    padding: '12px 16px',
+    borderRadius: '10px',
+    border: '1px solid #444',
+    backgroundColor: '#222',
+    color: '#fff',
+    fontSize: '16px',
+    outline: 'none',
+  },
+  button: {
+    padding: '14px',
+    background: 'linear-gradient(90deg, #ff416c, #ff4b2b)',
+    border: 'none',
+    borderRadius: '10px',
+    fontSize: '16px',
+    color: '#fff',
+    fontWeight: 'bold',
+    cursor: 'pointer',
+    transition: 'transform 0.2s ease-in-out',
+  },
+  loginText: {
+    marginTop: '16px',
+    fontSize: '14px',
+    color: '#ccc',
+  },
+  loginLink: {
+    color: '#00d2ff',
+    fontWeight: 'bold',
+    textDecoration: 'none',
+  },
 };
 
 export default Register;

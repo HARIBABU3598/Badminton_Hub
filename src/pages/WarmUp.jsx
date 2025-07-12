@@ -10,29 +10,54 @@ import { Link } from 'react-router-dom';
 const components = [
   {
     title: "1. Light Cardio",
-    description: "5–10 minutes of light jogging, skipping, or shuttle runs to elevate heart rate and warm up muscles.",
+    points: [
+      "Perform 5–10 minutes of light jogging, skipping, or shuttle runs.",
+      "Elevates heart rate and increases blood circulation.",
+      "Warms up muscles to prevent injury and prepare for intense play.",
+      "Incorporate direction changes to simulate court movement."
+    ],
     image: cardioImg,
   },
   {
     title: "2. Dynamic Stretching",
-    description: "Controlled stretches like leg swings, arm circles, lunges, and hip rotations activate joints and major muscle groups.",
+    points: [
+      "Use controlled movements like leg swings, arm circles, and lunges.",
+      "Activates joints and major muscle groups before explosive actions.",
+      "Improves flexibility while keeping muscles warm.",
+      "Prepares the body dynamically without static holding."
+    ],
     image: stretchImg,
   },
   {
     title: "3. Mobility Drills",
-    description: "Improve joint range with ankle bounces, shoulder rolls, and wrist rotations, enhancing flexibility.",
+    points: [
+      "Do ankle bounces, shoulder rolls, and wrist circles.",
+      "Increases range of motion and reduces stiffness.",
+      "Promotes fluid movement and injury prevention.",
+      "Improves balance, posture, and flexibility for fast footwork."
+    ],
     image: mobilityImg,
   },
   {
     title: "4. Footwork Activation",
-    description: "Simulate match movement using ladder drills, quick shuffles, and split steps to prep for court play.",
+    points: [
+      "Engage in ladder drills, quick shuffles, and split-steps.",
+      "Stimulates lower-body explosiveness and muscle memory.",
+      "Improves lateral and diagonal movement control.",
+      "Prepares the legs for rapid directional changes in play."
+    ],
     image: footworkImg,
   },
   {
     title: "5. Shadow Practice",
-    description: "Mimic strokes like clears, drops, and smashes without a shuttle to engage movement patterns and refine form.",
+    points: [
+      "Mimic clears, drops, net shots, and smashes without a shuttle.",
+      "Activates the full body with badminton-specific movements.",
+      "Improves stroke timing, balance, and positioning.",
+      "Mentally prepares for match conditions with fluid form."
+    ],
     image: shadowImg,
-  },
+  }
 ];
 
 const WarmUp = () => {
@@ -70,10 +95,14 @@ const WarmUp = () => {
               <img
                 src={item.image}
                 alt={item.title}
-                className="w-full h-[180px] object-cover rounded-lg shadow-md mb-4 transition duration-300 hover:shadow-lg hover:shadow-blue-500/40"
+                className="w-full h-[300px] object-cover rounded-lg shadow-md mb-4 transition duration-300 hover:shadow-lg hover:shadow-blue-500/40"
               />
-              <h2 className="text-xl font-bold text-cyan-400 mb-2">{item.title}</h2>
-              <p className="text-sm text-gray-100">{item.description}</p>
+              <h2 className="text-xl font-bold text-cyan-400 mb-3">{item.title}</h2>
+              <ul className="list-disc list-inside text-gray-100 text-sm space-y-1 text-left">
+                {item.points.map((point, i) => (
+                  <li key={i}>{point}</li>
+                ))}
+              </ul>
             </div>
           ))}
         </div>
@@ -81,7 +110,7 @@ const WarmUp = () => {
         {/* Back Button */}
         <div className="mt-16 text-center">
           <Link
-            to="/"
+            to="/training"
             className="inline-block bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-cyan-600 hover:to-blue-700 text-white px-6 py-3 rounded-full shadow-lg hover:shadow-cyan-500/40 transition-all duration-300 text-lg font-semibold"
           >
             ← Back to Training Program

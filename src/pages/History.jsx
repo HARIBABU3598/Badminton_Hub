@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import bg from '../assets/bg.jpg';
 import ancient from '../assets/icon/History/Ancient.png';
 import nineteenth from '../assets/icon/History/19th.png';
@@ -28,7 +29,7 @@ const History = () => {
       }}
     >
       <div className="w-full min-h-screen bg-black/20 backdrop-blur-sm p-6">
-      <center><h1 className="text-white text-3xl font-bold bg-white/20 w-[15%] rounded p-2 mb-10">History</h1></center>
+      <center><h1 className="text-white text-3xl font-bold bg-white/20 w-[40%] rounded p-2 mb-10">History</h1></center>
         <div className="relative max-w-6xl mx-auto z-0">
   {/* Vertical Line */}
   <div className="absolute left-1/2 transform -translate-x-1/2 w-1 h-full bg-white/40 z-0"></div>
@@ -61,7 +62,14 @@ const History = () => {
     </div>
   ))}
 </div>
-
+    <div className="mt-12 text-center">
+          <Link
+            to="/dashboard"
+            className="inline-block bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-full transition duration-300"
+          >
+            ← Back to Dashboard
+          </Link>
+        </div>
       </div>
     </div>
   );

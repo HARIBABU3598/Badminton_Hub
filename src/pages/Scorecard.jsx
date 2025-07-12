@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import ScoreBoard from './ScoreBoard';
+import {Link} from 'react-router-dom'
 
 const HomePage = () => {
   const matchHistoryRef = useRef(null);
@@ -240,6 +241,14 @@ const HomePage = () => {
             </div>
           </div>
         )}
+        <div className="mt-12 text-center">
+          <Link
+            to="/dashboard"
+            className="inline-block bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-full transition duration-300"
+          >
+            ← Back to Dashboard
+          </Link>
+        </div>
       </div>
     </div>
   );

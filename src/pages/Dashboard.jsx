@@ -12,6 +12,7 @@ import Training from '../assets/icon/Training.png'
 import Equip from '../assets/icon/Equip.png'
 import Shots from '../assets/icon/Shots.png'
 import Shop from '../assets/icon/Shop.png'
+import Swal from 'sweetalert2';
 
 const sections = [
   { title: 'History', icon: History, path: '/history' },
@@ -50,6 +51,33 @@ const Dashboard = () => {
       className="w-full bg-transparent outline-none text-gray-700 placeholder-gray-500"
     />
   </div>
+ <div className="text-center">
+  <button
+    onClick={() => {
+      Swal.fire({
+        title: 'Are you sure?',
+        text: 'Do you want to log out and go to the homepage?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, Log Out',
+        cancelButtonText: 'Cancel',
+        background: '#1f2937', // Tailwind's slate-800
+        color: '#fff',
+      }).then((result) => {
+        if (result.isConfirmed) {
+          window.location.href = '/';
+        }
+      });
+    }}
+    className="inline-block bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded-full transition duration-300"
+  >
+    ← Home
+  </button>
+</div>
+
+
 </div>
 
         <div className="w-[100%] h-[2px] bg-white mb-8"></div>
