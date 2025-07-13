@@ -1,22 +1,25 @@
-import React,{useState,useRef} from 'react';
+import React, { useState, useRef } from 'react';
 import bg from '../assets/bg.jpg';
+import { Link } from 'react-router-dom';
+
+// Video Imports
 import backhandHigh from '../assets/videos/Backhand_high.mp4';
 import forehandHigh from '../assets/videos/Forehand_high.mp4';
 import forehandLow from '../assets/videos/Forehand_low.mp4';
-import Defence from '../assets/videos/Defence.mp4'
-import Dribble from '../assets/videos/Dribble.mp4'
-import NetKill from '../assets/videos/NetKill.mp4'
-import JumpSmash from '../assets/videos/Jump_Smash.mp4'
-import SliceDrop from '../assets/videos/Slice_Drop.mp4'
-import Drop from '../assets/videos/Drop.mp4'
-import Smash from '../assets/videos/Smash.mp4'
-import BackhandLow from '../assets/videos/Backhand_low.mp4'
-import DiveDefense from '../assets/videos/Dive_defence.mp4'
-import Lift from '../assets/videos/Lift.mp4'
-import Drive from '../assets/videos/Drive.mp4'
-import Clear from '../assets/videos/Clear.mp4'
-import {Link} from 'react-router-dom'
+import Defence from '../assets/videos/Defence.mp4';
+import Dribble from '../assets/videos/Dribble.mp4';
+import NetKill from '../assets/videos/NetKill.mp4';
+import JumpSmash from '../assets/videos/Jump_Smash.mp4';
+import SliceDrop from '../assets/videos/Slice_Drop.mp4';
+import Drop from '../assets/videos/Drop.mp4';
+import Smash from '../assets/videos/Smash.mp4';
+import BackhandLow from '../assets/videos/Backhand_low.mp4';
+import DiveDefense from '../assets/videos/Dive_defence.mp4';
+import Lift from '../assets/videos/Lift.mp4';
+import Drive from '../assets/videos/Drive.mp4';
+import Clear from '../assets/videos/Clear.mp4';
 
+// Utility function
 const getVideoForShot = (name) => {
   if (name.includes('Backhand High')) return backhandHigh;
   if (name.includes('Forehand High')) return forehandHigh;
@@ -36,6 +39,7 @@ const getVideoForShot = (name) => {
   return null;
 };
 
+// Instructional Data
 const instructions = {
   services: {
     title: "Services",
@@ -104,7 +108,7 @@ const instructions = {
           "Requires good timing and leg strength.",
           "Hard to defend, aggressive shot."
         ]
-      },
+      }
     ]
   },
   drops: {
@@ -219,7 +223,7 @@ const instructions = {
   }
 };
 
-
+// Reusable VideoCard component
 const VideoCard = ({ title, points, videoSrc }) => {
   const videoRef = useRef(null);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -284,7 +288,7 @@ const VideoCard = ({ title, points, videoSrc }) => {
           {title}
         </h3>
         <ul className="list-disc list-inside text-white text-left space-y-2 text-sm">
-          {points.map((point, idx) => (
+          {(points || []).map((point, idx) => (
             <li key={idx}>{point}</li>
           ))}
         </ul>
@@ -293,6 +297,7 @@ const VideoCard = ({ title, points, videoSrc }) => {
   );
 };
 
+// Main Component
 const Shots = () => {
   return (
     <div
@@ -326,6 +331,7 @@ const Shots = () => {
             </div>
           </div>
         ))}
+
         <div className="mt-12 text-center">
           <Link
             to="/dashboard"

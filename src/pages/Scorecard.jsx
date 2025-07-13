@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
+import { motion } from 'framer-motion';
 import ScoreBoard from './ScoreBoard';
-import {Link} from 'react-router-dom'
+import { Link } from 'react-router-dom';
 
 const HomePage = () => {
   const matchHistoryRef = useRef(null);
@@ -11,40 +12,28 @@ const HomePage = () => {
   const [images, setImages] = useState([]);
   const [matchHistory, setMatchHistory] = useState([]);
   const scoreBoardRef = useRef();
-
   const userId = localStorage.getItem('userId');
 
   useEffect(() => {
-  setMatchHistory([]); // start fresh every session
-}, []);
-
+    setMatchHistory([]);
+  }, []);
 
   useEffect(() => {
     const handleKeyDown = (e) => {
       if (!matchStarted || !scoreBoardRef.current) return;
-
-      if (e.key === 'ArrowLeft') {
-        scoreBoardRef.current.addPointToPlayer(0);
-      } else if (e.key === 'ArrowRight') {
-        scoreBoardRef.current.addPointToPlayer(1);
-      }
+      if (e.key === 'ArrowLeft') scoreBoardRef.current.addPointToPlayer(0);
+      else if (e.key === 'ArrowRight') scoreBoardRef.current.addPointToPlayer(1);
     };
-
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [matchStarted]);
 
   const downloadMatchHistoryCSV = () => {
-    if (matchHistory.length === 0) {
-      alert('No match history to download');
-      return;
-    }
-
+    if (matchHistory.length === 0) return alert('No match history to download');
     let csv = 'S.No,Winner,Loser,Score,Date\n';
     matchHistory.forEach((match, index) => {
       csv += `${index + 1},${match.winner},${match.loser},${match.score},${match.date}\n`;
     });
-
     const blob = new Blob([csv], { type: 'text/csv' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
@@ -57,36 +46,20 @@ const HomePage = () => {
   };
 
   const saveToHistory = (winnerIndex, scores) => {
-    if (!scores || scores.length < 2 || isNaN(scores[0]) || isNaN(scores[1])) {
-      console.error('Invalid score data:', scores);
-      return;
-    }
-
     const loserIndex = winnerIndex === 0 ? 1 : 0;
     const winner = getPlayerName(winnerIndex);
     const loser = getPlayerName(loserIndex);
     const score = `${scores[winnerIndex]} - ${scores[loserIndex]}`;
     const date = new Date().toLocaleString();
-
     const newEntry = { winner, loser, score, date };
     const newHistory = [...matchHistory, newEntry];
-
     setMatchHistory(newHistory);
-
     if (userId) {
       fetch('http://localhost:8080/api/matches/save', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          userId: parseInt(userId),
-          ...newEntry
-        })
-      })
-        .then(res => {
-          if (!res.ok) throw new Error('Failed to save match');
-          console.log('Match saved to DB');
-        })
-        .catch(err => console.error(err));
+        body: JSON.stringify({ userId: parseInt(userId), ...newEntry })
+      }).catch(console.error);
     }
   };
 
@@ -97,10 +70,7 @@ const HomePage = () => {
   };
 
   const handleStartMatch = () => {
-    if (formData.some((n) => !n || n.trim() === '')) {
-      alert('Please fill all player names');
-      return;
-    }
+    if (formData.some((n) => !n || n.trim() === '')) return alert('Please fill all player names');
     setMatchStarted(true);
     setWinnerName('');
   };
@@ -125,15 +95,11 @@ const HomePage = () => {
     setImages([]);
   };
 
-  const handleDeleteHistory = () => {
-    setMatchHistory([]);
-  };
+  const handleDeleteHistory = () => setMatchHistory([]);
 
-  const getPlayerName = (index) => {
-    return isDoubles
-      ? `${formData[index * 2]} & ${formData[index * 2 + 1]}`
-      : formData[index];
-  };
+  const getPlayerName = (index) => isDoubles
+    ? `${formData[index * 2]} & ${formData[index * 2 + 1]}`
+    : formData[index];
 
   const playerCount = isDoubles ? 4 : 2;
 
@@ -141,18 +107,28 @@ const HomePage = () => {
     <div className="min-h-screen bg-gradient-to-br from-gray-900 to-gray-700 text-white p-6">
       <div className="max-w-4xl mx-auto space-y-12">
         {!matchStarted ? (
-          <div className="bg-white/10 backdrop-blur-md p-8 rounded-2xl shadow-md text-center space-y-6">
+          <motion.div
+            initial={{ opacity: 0, y: 40 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            className="bg-white/10 backdrop-blur-md p-8 rounded-2xl shadow-md text-center space-y-6"
+          >
             <h2 className="text-3xl font-bold">Score Card</h2>
-            <button
+            <motion.button
+              whileTap={{ scale: 0.95 }}
+              whileHover={{ scale: 1.05 }}
               onClick={toggleMatchType}
               className="bg-blue-600 hover:bg-blue-700 text-white font-medium px-6 py-2 rounded transition"
             >
               Switch to {isDoubles ? 'Singles' : 'Doubles'}
-            </button>
+            </motion.button>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               {[...Array(playerCount)].map((_, i) => (
-                <input
+                <motion.input
                   key={i}
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ delay: i * 0.05 }}
                   type="text"
                   placeholder={`Player ${i + 1} Name`}
                   value={formData[i] || ''}
@@ -161,13 +137,15 @@ const HomePage = () => {
                 />
               ))}
             </div>
-            <button
+            <motion.button
+              whileTap={{ scale: 0.95 }}
+              whileHover={{ scale: 1.05 }}
               onClick={handleStartMatch}
               className="mt-4 bg-green-600 hover:bg-green-700 px-6 py-3 text-white font-semibold rounded-md transition"
             >
               Start Match
-            </button>
-          </div>
+            </motion.button>
+          </motion.div>
         ) : (
           <>
             <ScoreBoard
@@ -189,15 +167,26 @@ const HomePage = () => {
         )}
 
         {winnerName && (
-          <div className="text-center">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.5 }}
+            className="text-center"
+          >
             <div className="bg-green-600/90 rounded-lg py-4 px-8 text-xl font-semibold inline-block shadow-md">
               <span className="text-white">{winnerName}</span> wins the match!
             </div>
-          </div>
+          </motion.div>
         )}
 
         {matchHistory.length > 0 && (
-          <div className="match-history-pdf bg-white/10 backdrop-blur-md p-6 rounded-lg shadow-md" ref={matchHistoryRef}>
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5 }}
+            className="match-history-pdf bg-white/10 backdrop-blur-md p-6 rounded-lg shadow-md"
+            ref={matchHistoryRef}
+          >
             <h3 className="text-2xl font-semibold mb-4">Match History</h3>
             <div className="overflow-x-auto">
               <table className="w-full text-sm text-white text-center border-separate border-spacing-y-2">
@@ -211,12 +200,18 @@ const HomePage = () => {
                 </thead>
                 <tbody>
                   {matchHistory.map((entry, idx) => (
-                    <tr key={idx} className="bg-white/10 rounded">
+                    <motion.tr
+                      key={idx}
+                      initial={{ opacity: 0, x: -20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: idx * 0.1 }}
+                      className="bg-white/10 rounded"
+                    >
                       <td className="p-2">{idx + 1}</td>
                       <td className="p-2">{entry.winner}</td>
                       <td className="p-2">{entry.loser}</td>
                       <td className="p-2">{entry.score}</td>
-                    </tr>
+                    </motion.tr>
                   ))}
                 </tbody>
               </table>
@@ -239,8 +234,9 @@ const HomePage = () => {
                 Delete Match History
               </button>
             </div>
-          </div>
+          </motion.div>
         )}
+
         <div className="mt-12 text-center">
           <Link
             to="/dashboard"

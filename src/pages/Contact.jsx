@@ -1,25 +1,57 @@
 import React from "react";
+import { motion } from "framer-motion";
 import bg from "../assets/bg.jpg";
 import lee from "../assets/contact.jpg";
+import { Link } from "react-router-dom";
 
 const ContactPage = () => {
   return (
-    <div
+    <motion.div
       className="bg-cover bg-center min-h-screen bg-black flex items-center justify-center px-4 py-10"
       style={{ backgroundImage: `url(${bg})` }}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.6 }}
     >
-      <div
+      <motion.div
         className="w-full max-w-6xl backdrop-blur-2xl bg-black/70 text-white rounded-xl shadow-xl p-6"
+        initial={{ y: 60, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.7 }}
       >
         {/* Heading */}
-        <h1 className="text-3xl sm:text-4xl font-bold text-center text-blue-400 mb-6 underline underline-offset-4">
+        <motion.h1
+          className="text-3xl sm:text-4xl font-bold text-center text-blue-400 mb-6 underline underline-offset-4"
+          initial={{ scale: 0.9, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          transition={{ delay: 0.2, duration: 0.5 }}
+        >
           Contact Us
-        </h1>
+        </motion.h1>
 
         {/* Content Block */}
-        <div className="flex flex-col lg:flex-row gap-8 items-center">
+        <motion.div
+          className="flex flex-col lg:flex-row gap-8 items-center"
+          initial="hidden"
+          animate="visible"
+          variants={{
+            visible: {
+              transition: {
+                staggerChildren: 0.2,
+              },
+            },
+          }}
+        >
           {/* Text Section */}
-          <div className="flex-1 space-y-4">
+          <motion.div
+            className="flex-1 space-y-4"
+            variants={{
+              hidden: { opacity: 0, y: 40 },
+              visible: { opacity: 1, y: 0 },
+            }}
+            transition={{ duration: 0.5 }}
+          >
             <p className="text-lg sm:text-xl leading-relaxed font-serif">
               We'd love to hear from you! Whether you have questions, suggestions, or just want to say hello,
               feel free to reach out. Our team is passionate about building a vibrant badminton community, and
@@ -63,7 +95,11 @@ const ContactPage = () => {
             </div>
 
             {/* Feedback Button */}
-            <div>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.6, duration: 0.5 }}
+            >
               <a
                 href="https://docs.google.com/forms/d/e/1FAIpQLSdHE_eQ69cFdD7q181iel_0RfdRZe_LZqZ4DZus7ngrAtMrxQ/viewform?usp=header"
                 target="_blank"
@@ -72,20 +108,40 @@ const ContactPage = () => {
               >
                 Submit Feedback
               </a>
-            </div>
-          </div>
+            </motion.div>
+          </motion.div>
 
           {/* Image Section */}
-          <div className="flex-shrink-0">
+          <motion.div
+            className="flex-shrink-0"
+            initial={{ opacity: 0, x: 60 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.7 }}
+          >
             <img
               src={lee}
               alt="Instructor"
               className="w-full max-w-xs rounded-lg shadow-lg border border-white/10"
             />
-          </div>
-        </div>
-      </div>
-    </div>
+          </motion.div>
+        </motion.div>
+
+        {/* Back Button */}
+        <motion.div
+          className="mt-12 text-center"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.8, duration: 0.5 }}
+        >
+          <Link
+            to="/"
+            className="inline-block bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-full transition duration-300 mb-5"
+          >
+            ← Back
+          </Link>
+        </motion.div>
+      </motion.div>
+    </motion.div>
   );
 };
 

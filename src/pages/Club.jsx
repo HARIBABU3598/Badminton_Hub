@@ -1,155 +1,92 @@
 import React from 'react';
-import group2020 from '../assets/group20200.jpg';
-import group2021 from '../assets/group2021.jpg';
-import group2022 from '../assets/group2022.jpg';
-import group2023 from '../assets/group2023.jpg';
-import group2025 from '../assets/group2025.jpg';
-import banner from '../assets/banner.jpg';
-import Bala from '../assets/players/Bala.png'
-import Kathir from '../assets/players/Kathir.png'
-import Munish from '../assets/players/Munish.png'
-import Sabarish from '../assets/players/Sabarish.png'
-import Santhosh from '../assets/players/Santhosh.png'
-import Vasi from '../assets/players/vasi.png'
-import Harikrishnan from '../assets/players/HK.png'
-import Haribabu from '../assets/players/Hari.png'
-import Saravanan from '../assets/players/Sarav.jpg'
-import Yudhan from '../assets/players/Yudhan.png'
-import Arul from '../assets/players/Arul.png'
-import Sriram from '../assets/players/sriram.png'
+import { Link } from 'react-router-dom';
+import { motion } from 'framer-motion';
 
-
-
-const players = [
-  "Arul Gnanaprakasam", "Saravana Kumar", "Balamurugan", "Yudhan Prakash",
-  "Haribabu", "Vasishtan", "Harikrishnan", "Santhosh", "Sriram",
-  "Balamurugan", "Sabarish", "Munish", "Kathirvelan"
-];
-
-const leaders = [
-  { role: "Honorary President", name: "G. Thirumavalavan M.E." },
-  { role: "Head of Club", name: "Balamurugan D.M.E." },
-  { role: "Vice Presidents", name: "S.R. Manikandan M.B.A. & J. Ananthkumar D.E.C.E." },
-  { role: "General Secretary", name: "Gopinathan D.C.Tech" },
-  { role: "Treasurer", name: "Arul Gnanaprakasam M.B.A." }
-];
-
-const groupPhotos = [
-  { year: 2020, image: group2020 },
-  { year: 2021, image: group2021 },
-  { year: 2022, image: group2022 },
-  { year: 2023, image: group2023 },
-  { year: 2024, image: group2023 },
-  { year: 2025, image: group2025 }
-];
+import Arul from '../assets/players/Arul.png';
+import Vasi from '../assets/players/vasi.png';
+import Saravanan from '../assets/players/Sarav.jpg';
+import Yudhan from '../assets/players/Yudhan.png';
+import Haribabu from '../assets/players/Hari.png';
+import Harikrishnan from '../assets/players/HK.png';
+import Santhosh from '../assets/players/Santhosh.png';
+import Sriram from '../assets/players/sriram.png';
+import Bala from '../assets/players/Bala.png';
+import Sabarish from '../assets/players/Sabarish.png';
+import Munish from '../assets/players/Munish.png';
+import Kathir from '../assets/players/Kathir.png';
+import Balamurugan from '../assets/players/Balamurugan.png'
 
 const player = [
-  { name: "Arul Gnanaprakasam", qualification: "M.B.A" ,image:Arul},
-    { name: "Balamurugan", qualification: "M.A.B.ED",image:Vasi },
-  { name: "Saravana Kumar", qualification: "B.Sc" ,image:Saravanan},
-  { name: "Yudhan Prakash", qualification: "BA. LLB",image:Yudhan },
-  { name: "Haribabu", qualification: "B.Tech IT",image: Haribabu},
-  { name: "Vasishtan", qualification: "Vis.Com" ,image:Vasi},
-  { name: "Harikrishnan", qualification: "B.E E.C.E" ,image:Harikrishnan},
-  { name: "Santhosh", qualification: "B.E CIVIL" ,image:Santhosh},
-  { name: "Vetrivelan", qualification: "XII" ,image:Sriram},
-  { name: "Balamurugan", qualification: "XII" ,image:Bala},
-  { name: "Sabarish", qualification: "X" ,image:Sabarish},
-  { name: "Munish", qualification: "IX",image: Munish},
-  { name: "Kathirvelan", qualification: "VIII" ,image:Kathir}
+  { name: "T Arul Gnanaprakasam", image: Arul },
+  { name: "S Balamurugan", image: Balamurugan },
+  { name: "S Saravana Kumar", image: Saravanan },
+  { name: "M Yudhan Prakash", image: Yudhan },
+  { name: "A Haribabu", image: Haribabu },
+  { name: "M Vasishtan", image: Vasi },
+  { name: "M Harikrishnan", image: Harikrishnan },
+  { name: "M Santhosh", image: Santhosh },
+  { name: "T Vetrivelan", image: Sriram },
+  { name: "K Balamurugan", image: Bala },
+  { name: "B Sabarish", image: Sabarish },
+  { name: "R Kesava Munish", image: Munish },
+  { name: "A E Kathirvelan", image: Kathir }
 ];
 
 
 const ClubPage = () => {
   return (
-    <div className="bg-gray-100 min-h-screen text-gray-800 p-4">
+    <motion.div
+      className="bg-gray-100 min-h-screen text-gray-800 p-4"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.6 }}
+    >
       <div className="max-w-5xl mx-auto">
-        <h1 className="text-4xl font-bold text-center text-green-700 mb-4">
-          Ayya Abdul Kalam Badminton Club
-        </h1>
-        <img src={banner} alt="Club Banner" className="w-full h-auto rounded-xl shadow-md mb-6 border" />
-        <p className="text-center text-lg text-gray-600 mb-6">
-          Sethiyathope, North Senninatham, Cuddalore - 608702 | Established 2020
-        </p>
+        <motion.h1
+          className="text-4xl font-bold text-center text-green-700 mb-6"
+          initial={{ y: -40, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ duration: 0.6 }}
+        >
+          Our Players
+        </motion.h1>
 
-        <section className="bg-white p-6 rounded-xl shadow-md mb-6 border">
-          <h2 className="text-2xl font-semibold text-green-700 mb-4">About Us</h2>
-          <p>
-            Founded in 2020 by a group of passionate street players and their families, our club is committed to developing badminton at the grassroots level.
-            Every Pongal, we conduct our signature Street Tournament, promoting sportsmanship with high-quality prizes like rackets and kit bags.
-          </p>
-        </section>
-
-       <section className="bg-white p-6 rounded-xl shadow-md mb-6 border">
-  <h2 className="text-2xl font-semibold text-green-700 mb-4">Leadership</h2>
-  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-    {leaders.map((leader, idx) => (
-      <div key={idx} className="bg-gray-50 p-4 rounded-md flex items-center shadow">
-        <img
-          src={`https://via.placeholder.com/64?text=Photo`}
-          alt={leader.name}
-          className="w-16 h-16 rounded-full object-cover border border-gray-300 mr-4"
-        />
-        <div>
-          <p className="font-semibold text-green-800">{leader.role}</p>
-          <p className="text-gray-700">{leader.name}</p>
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6">
+          {player.map((playerr, index) => (
+            <motion.div
+              key={index}
+              className="bg-green-50 p-4 rounded-lg flex flex-col items-center shadow-md text-center"
+              initial={{ opacity: 0, y: 50 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: index * 0.08 }}
+            >
+              <img
+                src={playerr.image}
+                alt={playerr.name}
+                className="w-30 h-30 rounded-full object-cover border border-gray-300 mb-2"
+              />
+              <p className="text-green-900 font-semibold text-sm sm:text-base">{playerr.name}</p>
+              
+            </motion.div>
+          ))}
         </div>
+
+        <motion.div
+          className="mt-12 text-center"
+          initial={{ y: 40, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ duration: 0.6, delay: 1 }}
+        >
+          <Link
+            to="/"
+            className="inline-block bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-full transition duration-300 mb-5"
+          >
+            ← Back
+          </Link>
+        </motion.div>
       </div>
-    ))}
-  </div>
-</section>
-
-
-        <section className="bg-white p-6 rounded-xl shadow-md mb-6 border">
-  <h2 className="text-2xl font-semibold text-green-700 mb-4">Our Players</h2>
-  <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6">
-    {player.map((playerr, index) => (
-      <div key={index} className="bg-green-50 p-4 rounded-lg flex flex-col items-center shadow-md text-center">
-        <img
-          src={playerr.image}
-          alt={playerr.name}
-          className="w-24 h-24 rounded-full object-cover border border-gray-300 mb-2"
-        />
-        <p className="text-green-900 font-semibold text-sm sm:text-base">{playerr.name}</p>
-        <p className="text-sm text-gray-700 mt-1">Qualification: {playerr.qualification}</p>
-      </div>
-    ))}
-  </div>
-</section>
-
-
-
-
-
-        <section className="bg-white p-6 rounded-xl shadow-md border mb-7">
-          <h2 className="text-2xl font-semibold text-green-700 mb-4">Tournaments & Events</h2>
-          <ul className="list-disc ml-6 space-y-2 text-gray-700">
-            <li>Annual Pongal Street Tournament (Junior & Senior Category)</li>
-            <li>Winners awarded with rackets, kit bags, and medals</li>
-            <li>Participated in several open-level district & state tournaments</li>
-          </ul>
-        </section>
-
-        <section className="bg-white p-6 rounded-xl shadow-md mb-6 border">
-          <h2 className="text-2xl font-semibold text-green-700 mb-4">Annual Group Photos</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {groupPhotos.map(({ year, image }) => (
-              <div key={year}>
-                <img
-  src={image}
-  alt={`Group Photo ${year}`}
-  className="w-full h-64 object-cover rounded-lg shadow-md"
-/>
-
-                <p className="text-center mt-2 font-medium text-gray-700">{year}</p>
-              </div>
-            ))}
-          </div>
-        </section>
-
-        
-      </div>
-    </div>
+    </motion.div>
   );
 };
 

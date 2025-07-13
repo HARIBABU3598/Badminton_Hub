@@ -1,14 +1,16 @@
 import React from 'react';
-import faultsImg from '../assets/rules/faults.png'; 
-import Serve from '../assets/faults/serve.png'
-import Rally from '../assets/faults/rally.png'
-import Net from '../assets/faults/net.png'
-import Conduct from '../assets/faults/conduct.png'
-import {Link} from 'react-router-dom'
+import { useInView } from 'react-intersection-observer';
+import { Link } from 'react-router-dom';
+
+import Serve from '../assets/faults/serve.png';
+import Rally from '../assets/faults/rally.png';
+import Net from '../assets/faults/net.png';
+import Conduct from '../assets/faults/conduct.png';
+
 const faultCategories = [
   {
     title: "Service Faults",
-    image:Serve,
+    image: Serve,
     points: [
       "Shuttle is struck above the server’s waist.",
       "Racket head is not pointing downward during serve.",
@@ -21,7 +23,7 @@ const faultCategories = [
   },
   {
     title: "Rally Faults",
-    image:Rally,
+    image: Rally,
     points: [
       "Shuttle lands outside boundaries or fails to cross the net.",
       "Shuttle touches ceiling, walls, or player’s clothing.",
@@ -34,7 +36,7 @@ const faultCategories = [
   },
   {
     title: "Net and Racket Faults",
-    image:Net,
+    image: Net,
     points: [
       "Player touches the net with racket, body, or clothing.",
       "Player or racket invades opponent’s side over the net during play.",
@@ -44,7 +46,7 @@ const faultCategories = [
   },
   {
     title: "Conduct Faults",
-    image:Conduct,
+    image: Conduct,
     points: [
       "Deliberate delay in play or repeated time-wasting.",
       "Verbal abuse, gestures, or unsporting behavior.",
@@ -61,41 +63,55 @@ const Faults = () => {
         Badminton Faults
       </h1>
 
-      {faultCategories.map((section, index) => (
-        <div key={index} className="mb-12">
-          <div className="flex flex-col md:flex-row gap-6 items-start">
-            {/* Image Section - Square & Responsive */}
-            <div className="w-full md:w-1/3 aspect-square rounded-lg overflow-hidden border border-white/20 bg-white/10 flex items-center justify-center">
-              <img
-                src={section.image}
-                alt={`${section.title} illustration`}
-                className="max-w-full max-h-full object-contain"
-              />
-            </div>
+      {faultCategories.map((section, index) => {
+        const { ref, inView } = useInView({
+          triggerOnce: true,
+          threshold: 0.15,
+        });
 
-            {/* Text Section */}
-            <div className="w-full md:w-2/3">
-              <h2 className="text-2xl md:text-3xl font-semibold mb-4 text-blue-400">
-                {section.title}
-              </h2>
-              <ul className="list-disc list-inside text-left space-y-2 text-white/90">
-                {section.points.map((point, idx) => (
-                  <li key={idx}>{point}</li>
-                ))}
-              </ul>
-              <div className="w-[100%] h-[2px] bg-white mt-4"></div>
+        return (
+          <div
+            key={index}
+            ref={ref}
+            className={`mb-12 transition-all duration-1000 ease-out transform ${
+              inView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+            }`}
+          >
+            <div className="flex flex-col md:flex-row gap-6 items-start">
+              {/* Image Section */}
+              <div className="w-full md:w-1/3 aspect-square rounded-lg overflow-hidden border border-white/20 bg-white/10 flex items-center justify-center">
+                <img
+                  src={section.image}
+                  alt={`${section.title} illustration`}
+                  className="max-w-full max-h-full object-contain"
+                />
+              </div>
+
+              {/* Text Section */}
+              <div className="w-full md:w-2/3">
+                <h2 className="text-2xl md:text-3xl font-semibold mb-4 text-blue-400">
+                  {section.title}
+                </h2>
+                <ul className="list-disc list-inside text-left space-y-2 text-white/90">
+                  {section.points.map((point, idx) => (
+                    <li key={idx}>{point}</li>
+                  ))}
+                </ul>
+                <div className="w-[100%] h-[2px] bg-white mt-4"></div>
+              </div>
             </div>
           </div>
-        </div>
-      ))}
+        );
+      })}
+
       <div className="mt-12 text-center">
-          <Link
-            to="/dashboard"
-            className="inline-block bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-full transition duration-300"
-          >
-            ← Back to Dashboard
-          </Link>
-        </div>
+        <Link
+          to="/dashboard"
+          className="inline-block bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-full transition duration-300"
+        >
+          ← Back to Dashboard
+        </Link>
+      </div>
     </div>
   );
 };

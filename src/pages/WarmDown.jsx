@@ -1,4 +1,5 @@
 import React from 'react';
+import { motion } from 'framer-motion';
 import warmDownImg from '../assets/training/WarmDown.png';
 import { Link } from 'react-router-dom';
 import deep from '../assets/warmdown/deep.png';
@@ -60,38 +61,75 @@ const steps = [
   }
 ];
 
+const cardVariants = {
+  hidden: { opacity: 0, y: 30 },
+  visible: (i) => ({
+    opacity: 1,
+    y: 0,
+    transition: { delay: i * 0.15 }
+  })
+};
+
 const WarmDown = () => {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-950 to-slate-800 text-white py-12 px-6">
+    <motion.div
+      className="min-h-screen bg-gradient-to-br from-gray-950 to-slate-800 text-white py-12 px-6"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.6 }}
+    >
       <div className="max-w-6xl mx-auto">
-        <h1 className="text-center text-4xl md:text-5xl font-bold mb-12 underline decoration-blue-500">
+        <motion.h1
+          className="text-center text-4xl md:text-5xl font-bold mb-12 underline decoration-blue-500"
+          initial={{ y: -30, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ duration: 0.6 }}
+        >
           🧘 Badminton Warm-Down Routine
-        </h1>
+        </motion.h1>
 
-        {/* Image and Description Section */}
-        <div className="flex flex-col-reverse md:flex-row items-center gap-10 mb-14">
-          <div className="md:w-1/2">
+        {/* Intro Section */}
+        <motion.div
+          className="flex flex-col-reverse md:flex-row items-center gap-10 mb-14"
+          initial="hidden"
+          animate="visible"
+        >
+          <motion.div
+            className="md:w-1/2"
+            initial={{ x: -50, opacity: 0 }}
+            animate={{ x: 0, opacity: 1 }}
+            transition={{ duration: 0.5 }}
+          >
             <p className="text-gray-300 text-base leading-relaxed">
               A proper warm-down helps transition the body from high activity to rest. It aids in preventing soreness,
               improving recovery, and preparing muscles for the next session. This structured routine covers cardio cooldown,
               flexibility work, and recovery essentials.
             </p>
-          </div>
-          <div className="md:w-1/2 flex justify-center">
+          </motion.div>
+          <motion.div
+            className="md:w-1/2 flex justify-center"
+            initial={{ x: 50, opacity: 0 }}
+            animate={{ x: 0, opacity: 1 }}
+            transition={{ duration: 0.5 }}
+          >
             <img
               src={warmDownImg}
               alt="Warm-Down"
               className="rounded-2xl shadow-2xl w-[320px] h-[240px] object-cover border border-white/20"
             />
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
 
         {/* Steps Cards */}
         <div className="space-y-6">
           {steps.map((item, idx) => (
-            <div
+            <motion.div
               key={idx}
               className="flex flex-col md:flex-row items-center gap-6 bg-white/10 backdrop-blur-md border border-white/20 rounded-xl p-6 shadow-md hover:bg-white/15 transition"
+              custom={idx}
+              variants={cardVariants}
+              initial="hidden"
+              animate="visible"
             >
               <img
                 src={item.image}
@@ -106,21 +144,25 @@ const WarmDown = () => {
                   ))}
                 </ul>
               </div>
-            </div>
+            </motion.div>
           ))}
         </div>
 
         {/* Back Button */}
-        <div className="mt-12 text-center">
+        <motion.div
+          className="mt-12 text-center"
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+        >
           <Link
             to="/training"
             className="inline-block bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-full transition duration-300"
           >
             ← Back to Training Program
           </Link>
-        </div>
+        </motion.div>
       </div>
-    </div>
+    </motion.div>
   );
 };
 
