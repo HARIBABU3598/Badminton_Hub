@@ -55,7 +55,7 @@ const Home = () => {
             <p className="text-base sm:text-lg text-gray-300 mb-6">
               Discover tournaments, connect with clubs, and level up your badminton journey.
             </p>
-            <Link to="/register">
+            <Link to="/dashboard">
               <button className="px-6 py-3 text-lg font-bold rounded bg-teal-500 hover:bg-teal-400 transition-all">
                 Get Started
               </button>
