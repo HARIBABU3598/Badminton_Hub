@@ -408,9 +408,7 @@ const MatchScorePage = ({ match, onMatchComplete, onCancel }) => {
           <h1 className="text-3xl font-bold text-center mb-2 text-cyan-400">
             {match.teamA} vs {match.teamB}
           </h1>
-          <p className="text-center text-gray-300 mb-4">
-            Use mouse clicks or keyboard arrows (← →) to score
-          </p>
+          
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
@@ -583,12 +581,7 @@ const downloadStandings = () => {
     <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-slate-800 text-white p-6">
       <div className="max-w-6xl mx-auto">
         <div className="flex justify-between items-center mb-4">
-          <button 
-            onClick={onBack}
-            className="px-4 py-2 bg-gray-600 hover:bg-gray-700 rounded flex items-center gap-2"
-          >
-            ← Back to Setup
-          </button>
+          
           
           <div className="flex gap-2">
             <button
@@ -614,10 +607,16 @@ const downloadStandings = () => {
             </button>
           </div>
         </div>
-        
+        <button 
+            onClick={onBack}
+            className="px-4 py-2 bg-gray-600 hover:bg-gray-700 rounded flex items-center gap-2 mb-8"
+          >
+            ← Back to Setup
+          </button>
         <h1 className="text-3xl font-bold text-center mb-6 text-cyan-400">
           League Schedule
         </h1>
+        
 
         {showStandings && (
           <div className="bg-white/10 backdrop-blur-md rounded-lg p-6 mb-8">
@@ -690,7 +689,6 @@ const downloadStandings = () => {
             <table className="w-full">
               <thead className="bg-cyan-900/50">
                 <tr>
-                  <th className="px-4 py-3 text-left">Match</th>
                   <th className="px-4 py-3">Teams</th>
                   <th className="px-4 py-3">Status</th>
                   <th className="px-4 py-3">Actions</th>
@@ -699,11 +697,7 @@ const downloadStandings = () => {
               <tbody>
                 {matches.map((match) => (
                   <tr key={match.id} className="border-b border-white/10 hover:bg-white/5">
-                    <td className="px-4 py-3">
-                      <div className="flex items-center gap-2">
-                        <span className="font-mono text-gray-400">#{match.id.slice(-4)}</span>
-                      </div>
-                    </td>
+                    
                     <td className="px-4 py-3">
                       <div className="flex items-center justify-between">
                         <span className="font-medium">{match.teamA}</span>
@@ -788,17 +782,30 @@ const TournamentSetup = () => {
 
   const handleSubmit = () => {
   const validTeams = teams.filter(t => t.trim() !== '');
+  
   if (!format) {
     alert('Please select a tournament format');
     return;
   }
+
   if (validTeams.length < 2) {
     alert('Please enter at least 2 team names');
     return;
   }
 
-  
+  let generatedMatches = [];
+
+  if (format === 'league') {
+    generatedMatches = generateLeagueMatches(validTeams);
+  } else if (format === 'knockout') {
+    // If knockout is implemented later
+    generatedMatches = generateKnockoutRounds(validTeams);
+  }
+
+  setMatches(generatedMatches);
+  setShowScheduler(true);
 };
+
 
 
   
