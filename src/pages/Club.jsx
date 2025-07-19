@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 
 import Arul from '../assets/players/Arul.png';
 import Vasi from '../assets/players/vasi.png';
-import Saravanan from '../assets/players/Sarav.jpg';
+import Saravanan from '../assets/players/Sarav.png';
 import Yudhan from '../assets/players/Yudhan.png';
 import Haribabu from '../assets/players/Hari.png';
 import Harikrishnan from '../assets/players/HK.png';

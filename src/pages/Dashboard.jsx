@@ -61,29 +61,11 @@ const Dashboard = () => {
 
           {/* Home Button */}
           <div className="text-center">
-            <button
-              onClick={() => {
-                Swal.fire({
-                  title: 'Are you sure?',
-                  text: 'Do you want to log out and go to the homepage?',
-                  icon: 'warning',
-                  showCancelButton: true,
-                  confirmButtonColor: '#3085d6',
-                  cancelButtonColor: '#d33',
-                  confirmButtonText: 'Yes, Log Out',
-                  cancelButtonText: 'Cancel',
-                  background: '#1f2937',
-                  color: '#fff',
-                }).then((result) => {
-                  if (result.isConfirmed) {
-                    window.location.href = '/';
-                  }
-                });
-              }}
-              className="inline-block bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded-full transition duration-300"
-            >
+            <Link to="/">
+            <button className="inline-block bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded-full transition duration-300">
               ← Home
             </button>
+            </Link>
           </div>
         </motion.div>
 
